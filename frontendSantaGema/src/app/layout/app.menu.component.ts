@@ -18,7 +18,8 @@ export class AppMenuComponent implements OnInit {
                 label: 'Administrador',
                 items: [
                     { label: 'Gestión Año Lectivo', icon: 'pi pi-fw pi-file-edit', routerLink: ['/admin/ALectivo'] },
-                    { label: 'Gestión Cursos', icon: 'pi pi-fw pi-file-edit', routerLink: ['/admin/Cursos'] }
+                    { label: 'Gestión Cursos', icon: 'pi pi-fw pi-file-edit', routerLink: ['/admin/Cursos'] },  
+                    { label: 'Gestión Usuarios', icon: 'pi pi-fw pi-file-edit', routerLink: ['/admin/Usuarios'] }
                 ]
             },
             {

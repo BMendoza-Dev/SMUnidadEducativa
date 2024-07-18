@@ -14,6 +14,21 @@ import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CursosComponent } from './cursos.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TableModule } from 'primeng/table';
+import { RatingModule } from 'primeng/rating';
+import { ButtonModule } from 'primeng/button';
+import { SliderModule } from 'primeng/slider';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { RippleModule } from 'primeng/ripple';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ToastModule } from 'primeng/toast';
+import { SplitButtonModule } from 'primeng/splitbutton';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ToolbarModule } from 'primeng/toolbar';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { DialogModule } from 'primeng/dialog';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 
 @NgModule({
@@ -21,7 +36,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     CursosRoutingModule,
-    AutoCompleteModule,
+	AutoCompleteModule,
 	CalendarModule,
 	ChipsModule,
 	DropdownModule,
@@ -31,8 +46,24 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 	MultiSelectModule,
 	InputTextareaModule,
 	InputTextModule,
-	FormsModule,
-	ReactiveFormsModule
+	TableModule,
+	RatingModule,
+	ButtonModule,
+	SliderModule,
+	ToggleButtonModule,
+	RippleModule,
+	ProgressBarModule,
+	ToastModule,
+	SplitButtonModule,
+
+	FileUploadModule,
+	ToolbarModule,
+	RadioButtonModule,
+	DialogModule,
+
+	MessagesModule,
+	MessageModule,
+	FormsModule
   ]
 })
 export class CursosModule { }

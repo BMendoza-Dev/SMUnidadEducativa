@@ -20,8 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('registerALectivo', [AnioLectivoController::class,'Register']);
-Route::post('registerCurso', [CursoController::class,'Register']);
 Route::get('getListALectivo', [AnioLectivoController::class,'getListALectivo']);
-Route::get('getListCurso', [CursoController::class,'getListCurso']);
 Route::post('updateALectivo', [AnioLectivoController::class,'updateALectivo']);
-Route::delete('deleteALectivo/{id}', [AnioLectivoController::class,'deleteALectivo']);
+Route::post('deleteALectivo', [AnioLectivoController::class,'deleteALectivo']);
+
+Route::post('registerCurso', [CursoController::class,'Register']);
+Route::get('getListCurso', [CursoController::class,'getListCurso']);
+Route::post('updateCurso', [CursoController::class,'updateCurso']);
+Route::post('deleteCurso', [CursoController::class,'deleteCurso']);

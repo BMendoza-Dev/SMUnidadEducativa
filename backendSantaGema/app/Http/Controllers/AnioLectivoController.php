@@ -30,12 +30,12 @@ class AnioLectivoController extends Controller
         // Obtener el ID del registro creado
         $id = $anioLectivo->id;
 
-        return response()->json(['menssage'=>'registro correcto','id' => $id,'code'=>'200']);
+        return response()->json(['message'=>'registro correcto','id' => $id,'code'=>'200']);
     }
 
     public function getListALectivo(){
         $anioLectivo = AnioLectivo::select('id','nombre','anioInicio','anioFin')->get();
-        return response()->json(['menssage'=> $anioLectivo,'code'=>'200']);
+        return response()->json(['message'=> $anioLectivo,'code'=>'200']);
     }
 
     public function updateALectivo(Request $request){
@@ -65,13 +65,18 @@ class AnioLectivoController extends Controller
         return response()->json(['message'=>'Registro actualizado correctamente', 'code'=>'200']);
     }
 
-    public function deleteALectivo($id){
-        $anioLectivo = AnioLectivo::find($id);
-        if (!$anioLectivo) {
-            return response()->json(['error' => 'Año Lectivo no encontrado', 'code'=>'404']);
-        }
+    public function deleteALectivo(Request $request){
 
-        $anioLectivo->delete();
+        $ids = $request->input('ids');
+        AnioLectivo::whereIn('id', $ids)->delete();
+        // return response()->json(['message' => $ids], 200);
+
+        // $anioLectivo = AnioLectivo::find($id);
+        // if (!$anioLectivo) {
+        //     return response()->json(['error' => 'Año Lectivo no encontrado', 'code'=>'404']);
+        // }
+
+        // $anioLectivo->delete();
 
         return response()->json(['message'=>'Registro eliminado correctamente', 'code'=>'200']);
     }

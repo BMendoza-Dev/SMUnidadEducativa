@@ -8,10 +8,6 @@ import { ProductService } from 'src/app/demo/service/product.service';
 import {ALectivo} from 'src/app/SantaGema/service/interface'
 import { AdminService } from '../../service/admin.service';
 
-interface expandedRows {
-  [key: string]: boolean;
-}
-
 @Component({
   selector: 'app-alectivo',
   templateUrl: './alectivo.component.html',
@@ -58,7 +54,7 @@ export class ALectivoComponent implements OnInit{
     rowsPerPageOptions = [5, 10, 20];
 
     ngOnInit() {
-        this.adminService.getListALectivo().subscribe(data => this.anioLectivos = data['menssage']);
+        this.adminService.getListALectivo().subscribe(data => this.anioLectivos = data['message']);
 
         this.cols = [
             { field: 'id', header: 'ID' },
@@ -91,10 +87,20 @@ export class ALectivoComponent implements OnInit{
     confirmDelete() {
         this.deleteAnioLectivoDialog = false;
         this.anioLectivos = this.anioLectivos.filter(val => val.id !== this.anioLectivo.id);
-        this.adminService.deleteALectivo(this.anioLectivo.id).subscribe({
+        
+        let ids = [
+            this.anioLectivo.id
+        ]
+        this.adminService.deleteALectivo(ids).subscribe({
             next:rest=>{
-                this.anioLectivo = {};
-                this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Año Lectivo eliminado', life: 3000 });
+                
+                if(rest['code']=="200"){
+                    this.anioLectivo = {};
+                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Año Lectivo eliminado', life: 3000 });    
+                }else{
+                    this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información' });
+                }
+
             },error:e=>{
                 window.location.reload();
                 console.log(e);
@@ -105,9 +111,24 @@ export class ALectivoComponent implements OnInit{
 
     confirmDeleteSelected() {
         this.deleteAnioLectivosDialog = false;
-        this.anioLectivos = this.anioLectivos.filter(val => !this.selectedAnioLectivos.includes(val));
-        this.selectedAnioLectivos = [];
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Años Lectivos eliminados', life: 3000 });
+        this.selectedAnioLectivos; 
+        let listaIds = this.selectedAnioLectivos.map(anio => anio.id);
+        this.adminService.deleteALectivo(listaIds).subscribe({
+            next:rest=> {
+                
+                if(rest['code']=="200"){
+                    this.anioLectivos = this.anioLectivos.filter(val => !this.selectedAnioLectivos.includes(val));
+                    this.selectedAnioLectivos = [];
+                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Años Lectivos eliminados', life: 3000 });
+                }else{
+                    this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información' });
+                }
+                
+            },error:e=>{
+                console.log(e)
+            }
+        })
+        
     }
 
     hideDialog() {
@@ -152,11 +173,12 @@ export class ALectivoComponent implements OnInit{
                         if(rest.code == "200"){
                             console.log("Se guardo correctamente");
                             this.anioLectivo.id = rest.id;
+                            debugger
                             this.anioLectivos.push(this.anioLectivo);                
                             this.messageService.add({ key: 'tst', severity: 'success', summary: 'Éxito!', detail: 'Se proceso correctamente' });
                             this.anioLectivos = [...this.anioLectivos];
                             this.anioLectivoDialog = false;
-                            this.anioLectivo = {};
+                            this.anioLectivo = {};  
                             this.validatedForm = false;
                         }else{
                             window.location.reload();

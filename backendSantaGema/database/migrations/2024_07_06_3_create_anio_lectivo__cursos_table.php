@@ -15,7 +15,7 @@ class CreateAnioLectivoCursosTable extends Migration
     {
         Schema::create('anio_lectivo__cursos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('curso')->references('id')->on('cursos')->onDelete('cascade');
+            $table->foreignId('curso_id')->references('id')->on('cursos')->onDelete('cascade');
             $table->foreignId('anio_lectivo_id')->references('id')->on('anio_lectivos')->onDelete('cascade');
             $table->timestamps();
         });

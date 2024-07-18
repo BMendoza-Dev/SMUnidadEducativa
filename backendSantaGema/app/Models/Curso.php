@@ -12,6 +12,6 @@ class Curso extends Model
 
     public function aniolectivo()
     {
-        return $this->belongsToMany(AnioLectivo::class);
+        return $this->belongsToMany(AnioLectivo::class,'anio_lectivo__cursos');
     }
 }

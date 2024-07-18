@@ -1,10 +1,11 @@
 export interface ALectivo {
-    id?:number
+    id?:number;
     nombre?: string;
     anioInicio?: string;
     anioFin?: string;
 }
 
 export interface Curso {
-    nombre: string;
+    id?:number;
+    nombre?: string;
 }
