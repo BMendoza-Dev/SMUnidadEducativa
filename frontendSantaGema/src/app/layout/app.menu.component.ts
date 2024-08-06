@@ -19,8 +19,16 @@ export class AppMenuComponent implements OnInit {
                 items: [
                     { label: 'Gestión Año Lectivo', icon: 'pi pi-fw pi-file-edit', routerLink: ['/admin/ALectivo'] },
                     { label: 'Gestión Cursos', icon: 'pi pi-fw pi-file-edit', routerLink: ['/admin/Cursos'] },  
-                    { label: 'Gestión Usuarios', icon: 'pi pi-fw pi-file-edit', routerLink: ['/admin/Usuarios'] }
-                ]
+                    { label: 'Gestión Usuarios', icon: 'pi pi-fw pi-file-edit', routerLink: ['/admin/Usuarios'] },
+                    {
+                        label: 'Gestión Matrículas', icon: 'pi pi-fw pi-bookmark',
+                        items: [
+                            {
+                                label: 'Registro Matrículas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/admin/Matriculas/crear-matricula'],
+                            }
+                        ]
+                    }
+                ],
             },
             {
                 label: 'Home',

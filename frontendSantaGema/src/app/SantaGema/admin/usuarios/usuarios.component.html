@@ -1,32 +1,219 @@
 <div class="col-12">
-    <div class="card">
-        <h2>GESTIÓN DE USUARIOS</h2>
-        <h5>REGISTRO</h5>
-        <div class="p-fluid p-formgrid grid">
-            <div class="field col-12 md:col-6">
-                <label htmlFor="firstname2">Firstname</label>
-                <input pInputText id="firstname2" type="text" />
-            </div>
-            <div class="field col-12 md:col-6">
-                <label htmlFor="lastname2">Lastname</label>
-                <input pInputText id="lastname2" type="text" />
-            </div>
-            <div class="field col-12">
-                <label htmlFor="address">Address</label>
-                <input pInputTextarea id="address" rows="4" />
-            </div>
-            <div class="field col-12 md:col-6">
-                <label htmlFor="city">City</label>
-                <input pInputText id="city" type="text" />
-            </div>
-            <div class="field col-12 md:col-3">
-                <label htmlFor="state">State</label>
-                <p-dropdown [options]="dropdownItems" optionLabel="name" [(ngModel)]="selectedState"></p-dropdown>
-            </div>
-            <div class="field col-12 md:col-3">
-                <label htmlFor="zip">Zip</label>
-                <input pInputText id="zip" type="text" />
-            </div>
+  <div class="card">
+    <h2>GESTIÓN DE USUARIOS</h2>
+    <h5>REGISTRO</h5>
+    <p-toast key="tst"></p-toast>
+    <div class="p-fluid p-formgrid grid">
+      <div class="col-12 md:col-6">
+        <div class="p-inputgroup">
+          <input pattern="\d{0,10}" maxlength="10" [(ngModel)]="cedula" (input)="ingresoCedula($event)" pInputText
+            placeholder="Cédula">
+          <!-- <button type="button" (click)="consultar()" pButton pRipple label="Cunsultar" [disabled]="btnConsultar"></button> -->
+          <p-button label="Consultar" icon="pi pi-search" [loading]="loading" (onClick)="consultar()"
+            [disabled]="btnConsultar"></p-button>
+
         </div>
+      </div>
     </div>
+    <div *ngIf="formularioAct" class="p-fluid p-formgrid grid" style="margin-top: 15px;">
+      <div class="field col-12 md:col-4">
+        <label htmlFor="firstname">Nombres</label>
+        <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !nombres}" [(ngModel)]="nombres" pInputText
+          id="nombres" type="text" placeholder="Nombres..." />
+      </div>
+      <div class="field col-12 md:col-4">
+        <label htmlFor="lastname">Apellidos</label>
+        <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !apellidos}" [(ngModel)]="apellidos"
+          pInputText id="apellidos" type="text" placeholder="Apellidos..." />
+      </div>
+      <div class="field col-12 md:col-3">
+        <label htmlFor="state">Nacionalidad</label>
+        <p-dropdown [options]="dropdownItemsNac" optionLabel="name"
+          [ngClass]="{'ng-invalid ng-dirty' : validatedForm && selectedNacionalidad.code == null}"
+          [(ngModel)]="selectedNacionalidad"></p-dropdown>
+      </div>
+      <div class="field col-12 md:col-3">
+        <label htmlFor="state">Género</label>
+        <p-dropdown [options]="dropdownItemsGen" optionLabel="name"
+          [ngClass]="{'ng-invalid ng-dirty' : validatedForm && selectedGenero.code == null}"
+          [(ngModel)]="selectedGenero"></p-dropdown>
+      </div>
+      <div class="field col-12 md:col-3">
+        <label htmlFor="state">Fecha de nacimiento</label>
+        <p-calendar [showIcon]="true" inputId="icon"
+          [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !fecha_nacimiento}"
+          [(ngModel)]="fecha_nacimiento"></p-calendar>
+      </div>
+    </div>
+
+    <div *ngIf="formularioAct" class="flex flex-wrap gap-2">
+      <button pButton pRipple label="Guardar" icon="pi pi-save" (click)="saveUsuario()"></button>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="col-12">
+    <div class="card px-6 py-6">
+      <p-toast></p-toast>
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+          <div class="my-2">
+            <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help mr-2"
+              (click)="dt.exportCSV()"></button>
+            <!-- <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button> -->
+            <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger"
+              (click)="deleteSelectedUsuarios()" [disabled]="!selectedUsuarios || !selectedUsuarios.length"></button>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+        </ng-template>
+      </p-toolbar>
+
+      <p-table #dt [value]="usuarios" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+        [globalFilterFields]="['cedula', 'nombres', 'apellidos', 'nacionalidad', 'genero', 'fecha_nacimiento']"
+        [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedUsuarios"
+        selectionMode="multiple" [rowHover]="true" dataKey="id">
+        <ng-template pTemplate="caption">
+          <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+            <h5 class="m-0">Lista de Usuarios</h5>
+            <span class="block mt-2 md:mt-0 p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                class="w-full sm:w-auto" />
+            </span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 3rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+            <th pSortableColumn="cedula">Cédula <p-sortIcon field="cedula"></p-sortIcon></th>
+            <th pSortableColumn="nombres">Nombres <p-sortIcon field="nombres"></p-sortIcon></th>
+            <th pSortableColumn="apellidos">Apellidos <p-sortIcon field="apellidos"></p-sortIcon></th>
+            <th pSortableColumn="nacionalidad">Nacionalidad <p-sortIcon field="nacionalidad"></p-sortIcon></th>
+            <th pSortableColumn="genero">Género <p-sortIcon field="genero"></p-sortIcon></th>
+            <th pSortableColumn="fecha_nacimiento">Fecha de Nacimiento <p-sortIcon
+                field="fecha_nacimiento"></p-sortIcon></th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-usuario>
+          <tr>
+            <td>
+              <p-tableCheckbox [value]="usuario"></p-tableCheckbox>
+            </td>
+            <td>
+              <span class="p-column-title">ID</span>
+              {{usuario.id}}
+            </td>
+            <td>
+              <span class="p-column-title">Cédula</span>
+              {{usuario.cedula}}
+            </td>
+            <td>
+              <span class="p-column-title">Nombres</span>
+              {{usuario.nombres}}
+            </td>
+            <td>
+              <span class="p-column-title">Apellidos</span>
+              {{usuario.apellidos}}
+            </td>
+            <td>
+              <span class="p-column-title">Nacionalidad</span>
+              {{usuario.nacionalidad}}
+            </td>
+            <td>
+              <span class="p-column-title">Género</span>
+              {{usuario.genero}}
+            </td>
+            <td>
+              <span class="p-column-title">Fecha de Nacimiento</span>
+              {{usuario.fecha_nacimiento | date:'dd/MM/yyyy'}}
+            </td>
+            <td>
+              <div class="flex">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                  (click)="editUsuario(usuario)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                  (click)="deleteUsuario(usuario)"></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <p-dialog [(visible)]="usuarioDialog" [style]="{width: '450px'}" header="Detalles del Año Lectivo"
+      [modal]="true" class="p-fluid">
+      <ng-template pTemplate="content">
+        <div class="field">
+          <label htmlFor="firstname">Cédula</label>
+          <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !cedula}" [(ngModel)]="usuario.cedula" pInputText
+            id="cedula" type="text" placeholder="Cédula..." />
+        </div>
+        <div class="field">
+          <label htmlFor="firstname">Nombres</label>
+          <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !nombres}" [(ngModel)]="usuario.nombres" pInputText
+            id="nombres" type="text" placeholder="Nombres..." />
+        </div>
+        <div class="field ">
+          <label htmlFor="lastname">Apellidos</label>
+          <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !apellidos}" [(ngModel)]="usuario.apellidos"
+            pInputText id="apellidos" type="text" placeholder="Apellidos..." />
+        </div>
+        <div class="field">
+          <label htmlFor="state">Nacionalidad</label>
+          <p-dropdown [options]="dropdownItemsNac" optionLabel="name"
+            [ngClass]="{'ng-invalid ng-dirty' : validatedForm && usuario.nacionalidad.code == null}"
+            [(ngModel)]="usuario.nacionalidad"></p-dropdown>
+        </div>
+        <div class="field">
+          <label htmlFor="state">Género</label>
+          <p-dropdown [options]="dropdownItemsGen" optionLabel="name"
+            [ngClass]="{'ng-invalid ng-dirty' : validatedForm && usuario.genero.code == null}"
+            [(ngModel)]="usuario.genero"></p-dropdown>
+        </div>
+        <div class="field">
+          <label htmlFor="state">Fecha de nacimiento</label>
+          <p-calendar [showIcon]="true" inputId="icon"
+            [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !fecha_nacimiento}"
+            [(ngModel)]="usuario.fecha_nacimiento"></p-calendar>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+          (click)="hideDialog()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+          (click)="saveUsuario()"></button>
+      </ng-template>
+    </p-dialog>
+
+    <p-dialog [(visible)]="deleteUsuarioDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
+          <div class="flex align-items-center justify-content-center">
+              <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+              <span *ngIf="usuario">Estas seguro que quieres eliminar <b>{{usuario.nombres}}</b>?</span>
+          </div>
+          <ng-template pTemplate="footer">
+              <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUsuarioDialog = false"></button>
+              <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDelete()"></button>
+          </ng-template>
+      </p-dialog>
+
+      <p-dialog [(visible)]="deleteUsuariosDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
+          <div class="flex align-items-center justify-content-center">
+              <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+              <span>Estas seguro que quieres eliminar los años lectivos?</span>
+          </div>
+          <ng-template pTemplate="footer">
+              <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUsuariosDialog = false"></button>
+              <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDeleteSelected()"></button>
+          </ng-template>
+      </p-dialog>
+  </div>
 </div>

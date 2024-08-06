@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AdminRoutingModule } from './admin-routing.module';
-import { ALectivoComponent } from './alectivo/alectivo.component';
-import { CursosComponent } from './cursos/cursos.component';
+import { MatriculasRoutingModule } from './matriculas-routing.module';
+import { CrearMatriculaComponent } from './crear-matricula/crear-matricula.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -31,13 +30,15 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { UsuariosComponent } from './usuarios/usuarios.component';
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
-  declarations: [UsuariosComponent, CursosComponent,ALectivoComponent],
+  declarations: [
+    CrearMatriculaComponent
+  ],
   imports: [
     CommonModule,
-    AdminRoutingModule,
+    MatriculasRoutingModule,
     DropdownModule,
     FormsModule,
     AutoCompleteModule,
@@ -67,6 +68,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 		FileUploadModule,
     RadioButtonModule,
     FormsModule,
+    AccordionModule 
   ]
 })
-export class AdminModule { }
+export class MatriculasModule { }

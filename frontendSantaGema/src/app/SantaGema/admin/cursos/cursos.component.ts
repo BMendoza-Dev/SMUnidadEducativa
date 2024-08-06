@@ -162,7 +162,7 @@ export class CursosComponent implements OnInit{
             this.curso = {
                 nombre: this.nomCurso,
             }
-            debugger
+            
             if(this.curso.nombre != ""){
                 this.adminService.registerCurso(this.curso).subscribe({
                     next:rest=>{

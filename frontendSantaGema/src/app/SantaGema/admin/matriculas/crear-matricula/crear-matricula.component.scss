@@ -1,0 +1,15 @@
+/* Asegúrate de que el contenedor del p-accordionTab ocupe todo el ancho */
+:host ::ng-deep .p-accordion .p-accordion-tab {
+    width: 100%;
+}
+
+/* Asegúrate de que el p-accordionTab ocupe todo el ancho */
+:host ::ng-deep .p-accordion .p-accordion-header,
+:host ::ng-deep .p-accordion .p-accordion-content {
+    width: 100%;
+}
+
+/* Ajusta los elementos internos para que también ocupen todo el ancho */
+.p-inputgroup {
+    width: 100%;
+}

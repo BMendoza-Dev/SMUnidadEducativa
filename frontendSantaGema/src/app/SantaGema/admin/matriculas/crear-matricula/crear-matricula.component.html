@@ -1,0 +1,159 @@
+<div class="col-12">
+    <div class="card">
+        <h5>Crear Matricula</h5>
+        <div class="p-fluid p-formgrid grid">
+            <div class="field col-12 md:col-6">
+                <label htmlFor="firstname2">Año lectivo</label>
+                <p-autoComplete [(ngModel)]="selectedAlectivo" [dropdown]="true" [suggestions]="filteredAnioLectivos"
+                    (completeMethod)="filterALectivo($event)" field="nombre"></p-autoComplete>
+            </div>
+            <div class="field col-12 md:col-6">
+                <label htmlFor="firstname2">Curso</label>
+                <p-autoComplete [(ngModel)]="selectedCurso" [dropdown]="true" [suggestions]="filteredCursos"
+                    (completeMethod)="filterCurso($event)" field="nombre"></p-autoComplete>
+            </div>
+            <div class="field col-12 md:col-3">
+                <label htmlFor="firstname2">Numero de matricula</label>
+                <input required [(ngModel)]="numMatricula" pInputText id="numMatricula" type="text" placeholder="Número de matrícula"/>
+            </div>
+            <p-accordion [multiple]="true" [activeIndex]="[0]"  [ngStyle]="{ 'width': '100%' }">
+                <p-accordionTab header="REPRESENTANTE">
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="col-12 md:col-6">
+                            <div class="p-inputgroup">
+                                <input pattern="\d{0,10}" maxlength="10" [(ngModel)]="cedulaRepre"
+                                    (input)="ingresoCedula($event,'repre')" pInputText placeholder="Cédula">
+                                <p-button label="Consultar" icon="pi pi-search" [loading]="loadingRepre"
+                                    (onClick)="consultar('repre')" [disabled]="btnConsultarRepre"></p-button>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div *ngIf="formularioRepre" class="p-fluid p-formgrid grid" style="margin-top: 15px;">
+                        <div class="col-12 md:col-4">
+                            <label htmlFor="firstname">Nombres</label>
+                            <input disabled [(ngModel)]="representante.usuarios.nombres" pInputText id="nombres"
+                                type="text" placeholder="Nombres..." />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="lastname">Apellidos</label>
+                            <input disabled [(ngModel)]="representante.usuarios.apellidos" pInputText id="apellidos"
+                                type="text" placeholder="Apellidos..." />
+                        </div>
+                        <div class="field col-12 md:col-2">
+                            <label htmlFor="state">Nacionalidad</label>
+                            <input disabled [(ngModel)]="representante.usuarios.nacionalidad" pInputText
+                                id="nacionalidad" type="text" placeholder="Nacionalidad..." />
+                        </div>
+                        <div class="field col-12 md:col-2">
+                            <label htmlFor="state">Género</label>
+                            <input disabled [(ngModel)]="representante.usuarios.genero" pInputText id="genero"
+                                type="text" placeholder="Genero..." />
+                        </div>
+                        <div class="field col-12 md:col-3">
+                            <label htmlFor="state">Fecha de nacimiento</label>
+                            <input disabled [(ngModel)]="representante.usuarios.fecha_nacimiento" pInputText
+                                id="fechaNacimiento" type="text" placeholder="Fecha de nacimiento..." />
+                        </div>
+                        <div class="field col-12 md:col-3">
+                            <label htmlFor="state">Parentesco</label>
+                            <p-dropdown [options]="dropdownItemsParentesco" optionLabel="name"
+                                [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && selectedParentesco.code == null}"
+                                [(ngModel)]="selectedParentesco"></p-dropdown>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="lastname">Dirección</label>
+                            <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.direccion}"
+                                [(ngModel)]="representante.direccion" pInputText id="direccion" type="text"
+                                placeholder="Direccion..." />
+                        </div>
+                        <div class="field col-12 md:col-2">
+                            <label htmlFor="lastname">Telefono</label>
+                            <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.telefono}"
+                                [(ngModel)]="representante.telefono" pInputText id="telefono" type="text"
+                                placeholder="Telefono..." />
+                        </div> 
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="lastname">Correo</label>
+                            <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.correo}"
+                                [(ngModel)]="representante.correo" pInputText id="correo" type="text"
+                                placeholder="Correo..." />
+                        </div>
+                    </div>
+                    <div *ngIf="formularioRepre" class="p-fluid p-formgrid grid">
+                        <div class="field col-12 md:col-3">
+                            <button pButton pRipple type="button" (click)="actualizarRepresentante()" label="Actualizar"></button>
+                        </div>
+                    </div>
+                </p-accordionTab>
+                <p-accordionTab header="ESTUDIANTE">
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="col-12 md:col-6">
+                            <div class="p-inputgroup">
+                                <input pattern="\d{0,10}" maxlength="10" [(ngModel)]="cedulaEstu"
+                                    (input)="ingresoCedula($event,'estu')" pInputText placeholder="Cédula">
+                                <p-button label="Consultar" icon="pi pi-search" [loading]="loadingEstu"
+                                    (onClick)="consultar('estu')" [disabled]="btnConsultarEstu"></p-button>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="formularioEstu" class="p-fluid p-formgrid grid" style="margin-top: 15px;">
+                        <div class="col-12 md:col-4">
+                            <label htmlFor="firstname">Nombres</label>
+                            <input disabled [(ngModel)]="estudiante.usuarios.nombres" pInputText id="nombres"
+                                type="text" placeholder="Nombres..." />
+                        </div>
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="lastname">Apellidos</label>
+                            <input disabled [(ngModel)]="estudiante.usuarios.apellidos" pInputText id="apellidos"
+                                type="text" placeholder="Apellidos..." />
+                        </div>
+                        <div class="field col-12 md:col-2">
+                            <label htmlFor="state">Nacionalidad</label>
+                            <input disabled [(ngModel)]="estudiante.usuarios.nacionalidad" pInputText
+                                id="nacionalidad" type="text" placeholder="Nacionalidad..." />
+                        </div>
+                        <div class="field col-12 md:col-2">
+                            <label htmlFor="state">Género</label>
+                            <input disabled [(ngModel)]="estudiante.usuarios.genero" pInputText id="genero"
+                                type="text" placeholder="Genero..." />
+                        </div>
+                        <div class="field col-12 md:col-3">
+                            <label htmlFor="state">Fecha de nacimiento</label>
+                            <input disabled [(ngModel)]="estudiante.usuarios.fecha_nacimiento" pInputText
+                                id="fechaNacimiento" type="text" placeholder="Fecha de nacimiento..." />
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label htmlFor="lastname">Dirección</label>
+                            <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.direccion}"
+                                [(ngModel)]="estudiante.direccion" pInputText id="direccion" type="text"
+                                placeholder="Direccion..." />
+                        </div>
+                        <div class="field col-12 md:col-2">
+                            <label htmlFor="lastname">Telefono</label>
+                            <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.telefono}"
+                                [(ngModel)]="estudiante.telefono" pInputText id="telefono" type="text"
+                                placeholder="Telefono..." />
+                        </div> 
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="lastname">Correo</label>
+                            <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.correo}"
+                                [(ngModel)]="estudiante.correo" pInputText id="correo" type="text"
+                                placeholder="Correo..." />
+                        </div>
+                    </div>
+                    <div *ngIf="formularioEstu" class="p-fluid p-formgrid grid">
+                        <div class="field col-12 md:col-3">
+                            <button pButton pRipple type="button" (click)="actualizarEstudiante()" label="Actualizar"></button>
+                        </div>
+                    </div>
+                </p-accordionTab>
+            </p-accordion>
+            <div class="field col-12 md:col-3">
+                <button pButton pRipple type="button" label="Crear matricula" (click)="crearMatricula()" class="p-button-rounded p-button-success" style="margin-top: 10px;"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-toast></p-toast>
