@@ -7,79 +7,18 @@ use Illuminate\Http\Request;
 
 class MatriculaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+    public function createMatricula(Request $request) {
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        $matricula = Matricula::create([
+            'matriculaNum' => $request->matriculaNum,
+            'estudiante_id' => $request->estudiante_id,
+            'representante_id' => $request->representante_id,
+            'anio_lectivo_id' => $request->anio_lectivo_id,
+            'curso_id' => $request->curso_id
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // $id = $matricula->id;
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Matricula  $matricula
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Matricula $matricula)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Matricula  $matricula
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Matricula $matricula)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Matricula  $matricula
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Matricula $matricula)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Matricula  $matricula
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Matricula $matricula)
-    {
-        //
+        return response()->json(['message' => 'Representante creado correctamente','code' => '200', 'dato' => $request->all()]);
     }
 }

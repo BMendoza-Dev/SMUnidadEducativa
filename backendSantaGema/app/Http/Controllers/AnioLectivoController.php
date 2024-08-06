@@ -69,14 +69,6 @@ class AnioLectivoController extends Controller
 
         $ids = $request->input('ids');
         AnioLectivo::whereIn('id', $ids)->delete();
-        // return response()->json(['message' => $ids], 200);
-
-        // $anioLectivo = AnioLectivo::find($id);
-        // if (!$anioLectivo) {
-        //     return response()->json(['error' => 'Año Lectivo no encontrado', 'code'=>'404']);
-        // }
-
-        // $anioLectivo->delete();
 
         return response()->json(['message'=>'Registro eliminado correctamente', 'code'=>'200']);
     }

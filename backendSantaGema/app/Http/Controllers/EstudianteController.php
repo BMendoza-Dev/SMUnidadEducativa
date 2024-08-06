@@ -3,83 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estudiante;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class EstudianteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function getEstudiante($id){
+        $estudiante = Estudiante::where('usuario_id', $id)->first();
+        if (!$estudiante) {
+            return response()->json(['message' => 'Usuario no registrado','code' => '404', $id]);
+        }
+
+        return response()->json(['message' => $estudiante,'code' => '200']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function updateEstudiante(Request $request) {
+        if($request->id){
+            $estudiante = Estudiante::find($request->id);
+            if (!$estudiante) {
+                return response()->json(['message' => 'Representante no encontrado','code' => '404']);
+            }
+
+            $estudiante->correo = $request->correo;
+            $estudiante->telefono = $request->telefono;
+            $estudiante->direccion = $request->direccion;
+            $estudiante->save(); 
+
+            return response()->json(['message' => 'Representante actualizado correctamente','code' => '200']);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function createEstudiante(Request $request) {
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Estudiante  $estudiante
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Estudiante $estudiante)
-    {
-        //
-    }
+        $estudiante = Estudiante::create([
+            'correo' =>$request->correo,
+            'telefono'=> $request->telefono,
+            'direccion'=> $request->direccion,
+            'usuario_id' => $request->usuario_id
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Estudiante  $estudiante
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Estudiante $estudiante)
-    {
-        //
-    }
+        $id = $estudiante->id;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Estudiante  $estudiante
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Estudiante $estudiante)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Estudiante  $estudiante
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Estudiante $estudiante)
-    {
-        //
+        return response()->json(['message' => 'Representante creado correctamente','code' => '200','id' => $id]);
     }
 }

@@ -3,83 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Models\Representante;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class RepresentanteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function getUsuarioMatricula($cedula){
+        $usuario = Usuario::where('cedula', $cedula)->first();
+        if (!$usuario) {
+            return response()->json(['message' => 'Usuario no registrado','code' => '404']);
+        }
+
+        return response()->json(['message' => $usuario,'code' => '200']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function getRepresentante($id){
+        $representante = Representante::where('usuario_id', $id)->first();
+        if (!$representante) {
+            return response()->json(['message' => 'Usuario no registrado','code' => '404', $id]);
+        }
+
+        return response()->json(['message' => $representante,'code' => '200']);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function updateRepresentante(Request $request) {
+        if($request->id){
+            $representante = Representante::find($request->id);
+            if (!$representante) {
+                return response()->json(['message' => 'Representante no encontrado','code' => '404']);
+            }
+
+            $representante->parentesco = $request->parentesco;
+            $representante->correo = $request->correo;
+            $representante->telefono = $request->telefono;
+            $representante->direccion = $request->direccion;
+            $representante->save(); 
+
+            return response()->json(['message' => 'Representante actualizado correctamente','code' => '200']);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Representante  $representante
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Representante $representante)
-    {
-        //
-    }
+    //Function create Representante
+    public function createRepresentante(Request $request) {
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Representante  $representante
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Representante $representante)
-    {
-        //
-    }
+        $representante = Representante::create([
+            'parentesco' =>$request->parentesco,
+            'correo' =>$request->correo,
+            'telefono'=> $request->telefono,
+            'direccion'=> $request->direccion,
+            'usuario_id' => $request->usuario_id
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Representante  $representante
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Representante $representante)
-    {
-        //
-    }
+        $id = $representante->id;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Representante  $representante
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Representante $representante)
-    {
-        //
+        return response()->json(['message' => 'Representante creado correctamente','code' => '200','id' => $id]);
     }
 }

@@ -19,7 +19,6 @@ class CreateRepresentantesTable extends Migration
             $table->string('direccion')->nullable();
             $table->string('telefono')->nullable();
             $table->string('correo')->nullable();
-            // $table->foreignId('usuario_id')->nullable()->references('id')->on('usuarios');
             $table->foreignId('usuario_id')->nullable()->constrained('usuarios')->onDelete('set null');
             $table->timestamps();
         });
