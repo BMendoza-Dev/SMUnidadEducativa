@@ -25,6 +25,9 @@ export class AppMenuComponent implements OnInit {
                         items: [
                             {
                                 label: 'Registro Matrículas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/admin/Matriculas/crear-matricula'],
+                            },
+                            {
+                                label: 'Lista Matrículas', icon: 'pi pi-fw pi-bookmark', routerLink: ['/admin/Matriculas/lista-matricula'],
                             }
                         ]
                     }

@@ -1,6 +1,6 @@
 <div class="col-12">
     <div class="card">
-        <h5>Crear Matricula</h5>
+        <h5>Crear Matrícula</h5>
         <div class="p-fluid p-formgrid grid">
             <div class="field col-12 md:col-6">
                 <label htmlFor="firstname2">Año lectivo</label>
@@ -13,7 +13,7 @@
                     (completeMethod)="filterCurso($event)" field="nombre"></p-autoComplete>
             </div>
             <div class="field col-12 md:col-3">
-                <label htmlFor="firstname2">Numero de matricula</label>
+                <label htmlFor="firstname2">Numero de matrícula</label>
                 <input required [(ngModel)]="numMatricula" pInputText id="numMatricula" type="text" placeholder="Número de matrícula"/>
             </div>
             <p-accordion [multiple]="true" [activeIndex]="[0]"  [ngStyle]="{ 'width': '100%' }">
@@ -150,7 +150,7 @@
                 </p-accordionTab>
             </p-accordion>
             <div class="field col-12 md:col-3">
-                <button pButton pRipple type="button" label="Crear matricula" (click)="crearMatricula()" class="p-button-rounded p-button-success" style="margin-top: 10px;"></button>
+                <button pButton pRipple type="button" label="Crear matrícula" (click)="crearMatricula()" class="p-button-rounded p-button-success" style="margin-top: 10px;"></button>
             </div>
         </div>
     </div>

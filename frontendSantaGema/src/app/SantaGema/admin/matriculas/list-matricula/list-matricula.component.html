@@ -1,0 +1,119 @@
+
+
+
+<!-- <div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+						<button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help mr-2" (click)="dt.exportCSV()"></button>
+                        <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedAnioLectivos()" [disabled]="!selectedAnioLectivos || !selectedAnioLectivos.length"></button>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="right">
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="anioLectivos" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['nombre', 'anioInicio', 'anioFin']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedAnioLectivos" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Lista de Años Lectivos</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+                        <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                        <th pSortableColumn="anioInicio">Año Inicio <p-sortIcon field="anioInicio"></p-sortIcon></th>
+                        <th pSortableColumn="anioFin">Año Fin <p-sortIcon field="anioFin"></p-sortIcon></th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-anioLectivo>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="anioLectivo"></p-tableCheckbox>
+                        </td>
+                        <td>
+                            <span class="p-column-title">ID</span>
+                            {{anioLectivo.id}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Nombre</span>
+                            {{anioLectivo.nombre}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Año Inicio</span>
+                            {{anioLectivo.anioInicio}}
+                        </td>
+                        <td>
+                            <span class="p-column-title">Año Fin</span>
+                            {{anioLectivo.anioFin}}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editAnioLectivo(anioLectivo)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteAnioLectivo(anioLectivo)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+        <p-dialog [(visible)]="anioLectivoDialog" [style]="{width: '450px'}" header="Detalles del Año Lectivo" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <div class="field">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" pInputText id="nombre" [(ngModel)]="anioLectivo.nombre" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !anioLectivo.nombre}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !anioLectivo.nombre">Nombre is required.</small>
+                </div>
+                <div class="field">
+                    <label for="anioInicio">Año Inicio</label>
+                    <input type="date" pInputText id="anioInicio" [(ngModel)]="anioLectivo.anioInicio" required />
+                </div>
+                <div class="field">
+                    <label for="anioFin">Año Fin</label>
+                    <input type="date" pInputText id="anioFin" [(ngModel)]="anioLectivo.anioFin" required />
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveAnioLectivo()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteAnioLectivoDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="anioLectivo">Estas seguro que quieres eliminar <b>{{anioLectivo.nombre}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteAnioLectivoDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteAnioLectivosDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>Estas seguro que quieres eliminar los años lectivos?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteAnioLectivosDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div> -->

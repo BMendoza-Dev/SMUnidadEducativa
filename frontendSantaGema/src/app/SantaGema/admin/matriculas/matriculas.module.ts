@@ -31,10 +31,12 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { AccordionModule } from 'primeng/accordion';
+import { ListMatriculaComponent } from './list-matricula/list-matricula.component';
 
 @NgModule({
   declarations: [
-    CrearMatriculaComponent
+    CrearMatriculaComponent,
+    ListMatriculaComponent
   ],
   imports: [
     CommonModule,
