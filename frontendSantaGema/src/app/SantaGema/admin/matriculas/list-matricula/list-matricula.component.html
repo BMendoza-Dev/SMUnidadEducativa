@@ -1,15 +1,38 @@
+<div class="col-12">
+    <div class="card">
+        <h5>Crear Matrícula</h5>
+        <div class="p-fluid p-formgrid grid align-items-center">
+            <div class="field col-12 md:col-5">
+                <label htmlFor="firstname2">Año lectivo</label>
+                <p-autoComplete required="" [(ngModel)]="selectedAlectivo" [dropdown]="true"
+                    [suggestions]="filteredAnioLectivos" (completeMethod)="filterALectivo($event)"
+                    field="nombre"></p-autoComplete>
+            </div>
+            <div class="field col-12 md:col-5">
+                <label htmlFor="firstname2">Curso</label>
+                <p-autoComplete required [(ngModel)]="selectedCurso" [dropdown]="true" [suggestions]="filteredCursos"
+                    (completeMethod)="filterCurso($event)" field="nombre"></p-autoComplete>
+            </div>
+            <div class="field col-12 md:col-2" style="margin-bottom: -2px;">
+                <p-button (click)="cargarMatritulas()" label="Filtrar"></p-button>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-
-<!-- <div class="grid">
+<div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
             <p-toast></p-toast>
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-						<button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help mr-2" (click)="dt.exportCSV()"></button>
-                        <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedAnioLectivos()" [disabled]="!selectedAnioLectivos || !selectedAnioLectivos.length"></button>
+                        <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help mr-2"
+                            (click)="dt.exportCSV()"></button>
+                        <!-- <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button> -->
+                        <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger"
+                            (click)="deleteSelectedMatriculas()"
+                            [disabled]="!selectedMatriculas || !selectedMatriculas.length"></button>
                     </div>
                 </ng-template>
 
@@ -17,13 +40,18 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="anioLectivos" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['nombre', 'anioInicio', 'anioFin']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedAnioLectivos" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="matriculas" [columns]="cols" responsiveLayout="scroll" [rows]="10"
+                [globalFilterFields]="['matriculaNum', 'estudiante.usuario.cedula' ,'nom_apellEstudiante', 'cedulaRepresentante','nom_apellRepresentante']"
+                [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                [(selection)]="selectedMatriculas" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Lista de Años Lectivos</h5>
+                        <h5 class="m-0">Lista de Usuarios</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
                         </span>
                     </div>
                 </ng-template>
@@ -33,87 +61,245 @@
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
                         <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
-                        <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-                        <th pSortableColumn="anioInicio">Año Inicio <p-sortIcon field="anioInicio"></p-sortIcon></th>
-                        <th pSortableColumn="anioFin">Año Fin <p-sortIcon field="anioFin"></p-sortIcon></th>
+                        <th pSortableColumn="matriculaNum">Número de Matrícula <p-sortIcon
+                                field="matriculaNum"></p-sortIcon></th>
+                        <th pSortableColumn="estudiante.usuario.cedula">Cédula de Estudiante <p-sortIcon
+                                field="estudiante.usuario.cedula"></p-sortIcon></th>
+                        <th pSortableColumn="nom_apellEstudiante">Estudiante <p-sortIcon
+                                field="nom_apellEstudiante"></p-sortIcon></th>
+                        <th pSortableColumn="dniRepresentante">Cédula de Representante <p-sortIcon
+                                field="dniRepresentante"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="nom_apellRepresentante">Representante <p-sortIcon
+                                field="nom_apellRepresentante"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-anioLectivo>
+                <ng-template pTemplate="body" let-matricula>
                     <tr>
                         <td>
-                            <p-tableCheckbox [value]="anioLectivo"></p-tableCheckbox>
+                            <p-tableCheckbox [value]="matricula"></p-tableCheckbox>
                         </td>
                         <td>
-                            <span class="p-column-title">ID</span>
-                            {{anioLectivo.id}}
+                            {{matricula.id}}
                         </td>
                         <td>
-                            <span class="p-column-title">Nombre</span>
-                            {{anioLectivo.nombre}}
+                            {{matricula.matriculaNum}}
                         </td>
                         <td>
-                            <span class="p-column-title">Año Inicio</span>
-                            {{anioLectivo.anioInicio}}
+                            {{matricula.estudiante.usuario.cedula}}
                         </td>
                         <td>
-                            <span class="p-column-title">Año Fin</span>
-                            {{anioLectivo.anioFin}}
+                            {{matricula.nom_apellEstudiante}}
+                        </td>
+                        <td>
+                            {{matricula.representante.usuario.cedula}}
+                        </td>
+                        <td>
+                            {{matricula.nom_apellRepresentante}}
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editAnioLectivo(anioLectivo)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteAnioLectivo(anioLectivo)"></button>
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editMatricula(matricula)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                                    (click)="deleteMatricula(matricula)"></button>
                             </div>
                         </td>
                     </tr>
                 </ng-template>
             </p-table>
         </div>
-
-        <p-dialog [(visible)]="anioLectivoDialog" [style]="{width: '450px'}" header="Detalles del Año Lectivo" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="matriculaDialog" [style]="{width: '950px'}" header="Detalles de la matricula"
+            [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-                <div class="field">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" pInputText id="nombre" [(ngModel)]="anioLectivo.nombre" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !anioLectivo.nombre}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !anioLectivo.nombre">Nombre is required.</small>
+                <div class="col-12">
+                    <div class="p-fluid p-formgrid grid">
+                        <div class="field col-12 md:col-4">
+                            <label htmlFor="firstname2">Año lectivo</label>
+                            <p-autoComplete required [(ngModel)]="selectedAlectivoEdit" [dropdown]="true"
+                                [suggestions]="filteredAnioLectivosEdit" (completeMethod)="filterALectivoEdit($event)"
+                                field="nombre"></p-autoComplete>
+                        </div>
+                        <div class="field col-12 md:col-5">
+                            <label htmlFor="firstname2">Curso</label>
+                            <p-autoComplete required [(ngModel)]="selectedCursoEdit" [dropdown]="true"
+                                [suggestions]="filteredCursosEdit" (completeMethod)="filterCursoEdit($event)"
+                                field="nombre"></p-autoComplete>
+                        </div>
+                        <div class="field col-12 md:col-3">
+                            <label htmlFor="firstname2">Numero de matrícula</label>
+                            <input required [(ngModel)]="matriculaNum" pInputText id="numMatricula" type="text"
+                                placeholder="Número de matrícula" />
+                        </div>
+                    </div>
                 </div>
-                <div class="field">
-                    <label for="anioInicio">Año Inicio</label>
-                    <input type="date" pInputText id="anioInicio" [(ngModel)]="anioLectivo.anioInicio" required />
-                </div>
-                <div class="field">
-                    <label for="anioFin">Año Fin</label>
-                    <input type="date" pInputText id="anioFin" [(ngModel)]="anioLectivo.anioFin" required />
-                </div>
+                <p-accordion [multiple]="true" [activeIndex]="[0]"  [ngStyle]="{ 'width': '100%' }">
+                    <p-accordionTab header="REPRESENTANTE">
+                        <div class="p-fluid p-formgrid grid">
+                            <div class="col-12 md:col-6">
+                                <div class="p-inputgroup">
+                                    <input pattern="\d{0,10}" maxlength="10" [(ngModel)]="cedulaRepre"
+                                        (input)="ingresoCedula($event,'repre')" pInputText placeholder="Cédula">
+                                    <p-button label="Consultar" icon="pi pi-search" [loading]="loadingRepre"
+                                        (onClick)="consultar('repre')" [disabled]="btnConsultarRepre"></p-button>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div *ngIf="formularioRepre" class="p-fluid p-formgrid grid" style="margin-top: 15px;">
+                            <div class="col-12 md:col-4">
+                                <label htmlFor="firstname">Nombres</label>
+                                <input disabled [(ngModel)]="representante.usuarios.nombres" pInputText id="nombres"
+                                    type="text" placeholder="Nombres..." />
+                            </div>
+                            <div class="field col-12 md:col-4">
+                                <label htmlFor="lastname">Apellidos</label>
+                                <input disabled [(ngModel)]="representante.usuarios.apellidos" pInputText id="apellidos"
+                                    type="text" placeholder="Apellidos..." />
+                            </div>
+                            <div class="field col-12 md:col-2">
+                                <label htmlFor="state">Nacionalidad</label>
+                                <input disabled [(ngModel)]="representante.usuarios.nacionalidad" pInputText
+                                    id="nacionalidad" type="text" placeholder="Nacionalidad..." />
+                            </div>
+                            <div class="field col-12 md:col-2">
+                                <label htmlFor="state">Género</label>
+                                <input disabled [(ngModel)]="representante.usuarios.genero" pInputText id="genero"
+                                    type="text" placeholder="Genero..." />
+                            </div>
+                            <div class="field col-12 md:col-3">
+                                <label htmlFor="state">Fecha de nacimiento</label>
+                                <input disabled [(ngModel)]="representante.usuarios.fecha_nacimiento" pInputText
+                                    id="fechaNacimiento" type="text" placeholder="Fecha de nacimiento..." />
+                            </div>
+                            <div class="field col-12 md:col-3">
+                                <label htmlFor="state">Parentesco</label>
+                                <p-dropdown [options]="dropdownItemsParentesco" optionLabel="name"
+                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && selectedParentesco.code == null}"
+                                    [(ngModel)]="selectedParentesco"></p-dropdown>
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label htmlFor="lastname">Dirección</label>
+                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.direccion}"
+                                    [(ngModel)]="representante.direccion" pInputText id="direccion" type="text"
+                                    placeholder="Direccion..." />
+                            </div>
+                            <div class="field col-12 md:col-2">
+                                <label htmlFor="lastname">Telefono</label>
+                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.telefono}"
+                                    [(ngModel)]="representante.telefono" pInputText id="telefono" type="text"
+                                    placeholder="Telefono..." />
+                            </div> 
+                            <div class="field col-12 md:col-4">
+                                <label htmlFor="lastname">Correo</label>
+                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.correo}"
+                                    [(ngModel)]="representante.correo" pInputText id="correo" type="text"
+                                    placeholder="Correo..." />
+                            </div>
+                        </div>
+                        <div *ngIf="formularioRepre" class="p-fluid p-formgrid grid">
+                            <div class="field col-12 md:col-3">
+                                <button pButton pRipple type="button" (click)="actualizarRepresentante()" label="Actualizar"></button>
+                            </div>
+                        </div>
+                    </p-accordionTab>
+                    <p-accordionTab header="ESTUDIANTE">
+                        <div class="p-fluid p-formgrid grid">
+                            <div class="col-12 md:col-6">
+                                <div class="p-inputgroup">
+                                    <input pattern="\d{0,10}" maxlength="10" [(ngModel)]="cedulaEstu"
+                                        (input)="ingresoCedula($event,'estu')" pInputText placeholder="Cédula">
+                                    <p-button label="Consultar" icon="pi pi-search" [loading]="loadingEstu"
+                                        (onClick)="consultar('estu')" [disabled]="btnConsultarEstu"></p-button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="formularioEstu" class="p-fluid p-formgrid grid" style="margin-top: 15px;">
+                            <div class="col-12 md:col-4">
+                                <label htmlFor="firstname">Nombres</label>
+                                <input disabled [(ngModel)]="estudiante.usuarios.nombres" pInputText id="nombres"
+                                    type="text" placeholder="Nombres..." />
+                            </div>
+                            <div class="field col-12 md:col-4">
+                                <label htmlFor="lastname">Apellidos</label>
+                                <input disabled [(ngModel)]="estudiante.usuarios.apellidos" pInputText id="apellidos"
+                                    type="text" placeholder="Apellidos..." />
+                            </div>
+                            <div class="field col-12 md:col-2">
+                                <label htmlFor="state">Nacionalidad</label>
+                                <input disabled [(ngModel)]="estudiante.usuarios.nacionalidad" pInputText
+                                    id="nacionalidad" type="text" placeholder="Nacionalidad..." />
+                            </div>
+                            <div class="field col-12 md:col-2">
+                                <label htmlFor="state">Género</label>
+                                <input disabled [(ngModel)]="estudiante.usuarios.genero" pInputText id="genero"
+                                    type="text" placeholder="Genero..." />
+                            </div>
+                            <div class="field col-12 md:col-3">
+                                <label htmlFor="state">Fecha de nacimiento</label>
+                                <input disabled [(ngModel)]="estudiante.usuarios.fecha_nacimiento" pInputText
+                                    id="fechaNacimiento" type="text" placeholder="Fecha de nacimiento..." />
+                            </div>
+                            <div class="field col-12 md:col-6">
+                                <label htmlFor="lastname">Dirección</label>
+                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.direccion}"
+                                    [(ngModel)]="estudiante.direccion" pInputText id="direccion" type="text"
+                                    placeholder="Direccion..." />
+                            </div>
+                            <div class="field col-12 md:col-2">
+                                <label htmlFor="lastname">Telefono</label>
+                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.telefono}"
+                                    [(ngModel)]="estudiante.telefono" pInputText id="telefono" type="text"
+                                    placeholder="Telefono..." />
+                            </div> 
+                            <div class="field col-12 md:col-4">
+                                <label htmlFor="lastname">Correo</label>
+                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.correo}"
+                                    [(ngModel)]="estudiante.correo" pInputText id="correo" type="text"
+                                    placeholder="Correo..." />
+                            </div>
+                        </div>
+                        <div *ngIf="formularioEstu" class="p-fluid p-formgrid grid">
+                            <div class="field col-12 md:col-3">
+                                <button pButton pRipple type="button" (click)="actualizarEstudiante()" label="Actualizar"></button>
+                            </div>
+                        </div>
+                    </p-accordionTab>
+                </p-accordion>
             </ng-template>
 
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveAnioLectivo()"></button>
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Actualizar" icon="pi pi-check" class="p-button-text"
+                    (click)="actualizarMatricula()"></button>
             </ng-template>
         </p-dialog>
-
-        <p-dialog [(visible)]="deleteAnioLectivoDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteMatriculaDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span *ngIf="anioLectivo">Estas seguro que quieres eliminar <b>{{anioLectivo.nombre}}</b>?</span>
+                <span *ngIf="matricula">Estas seguro que quieres eliminar <b>{{matricula.matriculaNum}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteAnioLectivoDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteMatriculaDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                    (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
-
-        <p-dialog [(visible)]="deleteAnioLectivosDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
+        <p-dialog [(visible)]="deleteMatriculasDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Estas seguro que quieres eliminar los años lectivos?</span>
+                <span>Estas seguro que quieres eliminar las matriculas?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteAnioLectivosDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDeleteSelected()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteMatriculasDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                    (click)="confirmDeleteSelected()"></button>
             </ng-template>
         </p-dialog>
     </div>
-</div> -->
+</div>

@@ -40,7 +40,7 @@
       </div>
       <div class="field col-12 md:col-3">
         <label htmlFor="state">Fecha de nacimiento</label>
-        <p-calendar [showIcon]="true" inputId="icon"
+        <p-calendar dateFormat="dd/mm/yy" placeholder="dd/mm/YY" [showIcon]="true" inputId="icon"
           [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !fecha_nacimiento}"
           [(ngModel)]="fecha_nacimiento"></p-calendar>
       </div>
@@ -148,23 +148,23 @@
       </p-table>
     </div>
 
-    <p-dialog [(visible)]="usuarioDialog" [style]="{width: '450px'}" header="Detalles del Año Lectivo"
-      [modal]="true" class="p-fluid">
+    <p-dialog [(visible)]="usuarioDialog" [style]="{width: '450px'}" header="Detalles del Usaurio" [modal]="true"
+      class="p-fluid">
       <ng-template pTemplate="content">
         <div class="field">
           <label htmlFor="firstname">Cédula</label>
-          <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !cedula}" [(ngModel)]="usuario.cedula" pInputText
-            id="cedula" type="text" placeholder="Cédula..." />
+          <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !cedula}" [(ngModel)]="usuario.cedula"
+            pInputText id="cedula" type="text" placeholder="Cédula..." />
         </div>
         <div class="field">
           <label htmlFor="firstname">Nombres</label>
-          <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !nombres}" [(ngModel)]="usuario.nombres" pInputText
-            id="nombres" type="text" placeholder="Nombres..." />
+          <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !nombres}" [(ngModel)]="usuario.nombres"
+            pInputText id="nombres" type="text" placeholder="Nombres..." />
         </div>
         <div class="field ">
           <label htmlFor="lastname">Apellidos</label>
-          <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !apellidos}" [(ngModel)]="usuario.apellidos"
-            pInputText id="apellidos" type="text" placeholder="Apellidos..." />
+          <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !apellidos}"
+            [(ngModel)]="usuario.apellidos" pInputText id="apellidos" type="text" placeholder="Apellidos..." />
         </div>
         <div class="field">
           <label htmlFor="state">Nacionalidad</label>
@@ -179,10 +179,8 @@
             [(ngModel)]="usuario.genero"></p-dropdown>
         </div>
         <div class="field">
-          <label htmlFor="state">Fecha de nacimiento</label>
-          <p-calendar [showIcon]="true" inputId="icon"
-            [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !fecha_nacimiento}"
-            [(ngModel)]="usuario.fecha_nacimiento"></p-calendar>
+          <label for="anioFin">Año Fin</label>
+          <input type="date" pInputText id="anioFin" [(ngModel)]="usuario.fecha_nacimiento" required />
         </div>
       </ng-template>
 
@@ -195,25 +193,28 @@
     </p-dialog>
 
     <p-dialog [(visible)]="deleteUsuarioDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
-          <div class="flex align-items-center justify-content-center">
-              <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-              <span *ngIf="usuario">Estas seguro que quieres eliminar <b>{{usuario.nombres}}</b>?</span>
-          </div>
-          <ng-template pTemplate="footer">
-              <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUsuarioDialog = false"></button>
-              <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDelete()"></button>
-          </ng-template>
-      </p-dialog>
+      <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span *ngIf="usuario">Estas seguro que quieres eliminar <b>{{usuario.nombres}}</b>?</span>
+      </div>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+          (click)="deleteUsuarioDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDelete()"></button>
+      </ng-template>
+    </p-dialog>
 
-      <p-dialog [(visible)]="deleteUsuariosDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
-          <div class="flex align-items-center justify-content-center">
-              <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-              <span>Estas seguro que quieres eliminar los años lectivos?</span>
-          </div>
-          <ng-template pTemplate="footer">
-              <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteUsuariosDialog = false"></button>
-              <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDeleteSelected()"></button>
-          </ng-template>
-      </p-dialog>
+    <p-dialog [(visible)]="deleteUsuariosDialog" header="Confirmar!" [modal]="true" [style]="{width:'450px'}">
+      <div class="flex align-items-center justify-content-center">
+        <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+        <span>Estas seguro que quieres eliminar los años lectivos?</span>
+      </div>
+      <ng-template pTemplate="footer">
+        <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+          (click)="deleteUsuariosDialog = false"></button>
+        <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+          (click)="confirmDeleteSelected()"></button>
+      </ng-template>
+    </p-dialog>
   </div>
 </div>

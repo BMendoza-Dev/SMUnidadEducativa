@@ -171,9 +171,7 @@ export class ALectivoComponent implements OnInit{
                 this.adminService.registerALectivo(this.anioLectivo).subscribe({
                     next:rest=>{
                         if(rest.code == "200"){
-                            console.log("Se guardo correctamente");
                             this.anioLectivo.id = rest.id;
-                            
                             this.anioLectivos.push(this.anioLectivo);                
                             this.messageService.add({ key: 'tst', severity: 'success', summary: 'Éxito!', detail: 'Se proceso correctamente' });
                             this.anioLectivos = [...this.anioLectivos];

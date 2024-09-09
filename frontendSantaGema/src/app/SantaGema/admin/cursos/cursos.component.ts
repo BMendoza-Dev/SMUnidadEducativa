@@ -167,7 +167,6 @@ export class CursosComponent implements OnInit{
                 this.adminService.registerCurso(this.curso).subscribe({
                     next:rest=>{
                         if(rest.code == "200"){
-                            console.log("Se guardo correctamente");
                             this.curso.id = rest.id;
                             this.cursos.push(this.curso);                
                             this.messageService.add({ key: 'tst', severity: 'success', summary: 'Éxito!', detail: 'Se proceso correctamente' });

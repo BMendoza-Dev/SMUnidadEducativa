@@ -52,13 +52,19 @@ export class CrearMatriculaComponent implements OnInit {
 
   ngOnInit(): void {
     this.limpiarInterface();
+    this.cargarALectivos();
+    this.cargarCursos();
+  }
+
+  cargarALectivos(): void {
     this.adminService.getListALectivo().subscribe({
       next: rest => {
         this.aniolectivos = rest.message;
       },
       error: err => console.error(err)
     });
-
+  }
+  cargarCursos(): void {
     this.adminService.getListCurso().subscribe({
       next: rest => {
         this.cursos = rest.message;
@@ -77,21 +83,8 @@ export class CrearMatriculaComponent implements OnInit {
       genero: ''
 
     }
-    this.representante = {
-      id: 0,
-      usuarios: usuarios, // O puedes inicializar con un objeto Usuarios vacío si tienes la interfaz definida
-      parentesco: '',
-      direccion: '',
-      telefono: '',
-      correo: ''
-    }
-    this.estudiante = {
-      id: 0,
-      usuarios: usuarios, // O puedes inicializar con un objeto Usuarios vacío si tienes la interfaz definida
-      direccion: '',
-      telefono: '',
-      correo: ''
-    }
+    this.limpiarEstudiante(usuarios);
+    this.limpiarRepresentante(usuarios);
     this.numMatricula = '';
     this.cedulaEstu='';
     this.cedulaRepre='';
@@ -99,6 +92,26 @@ export class CrearMatriculaComponent implements OnInit {
     this.selectedCurso = '';
     this.formularioEstu = false;
     this.formularioRepre = false;
+  }
+
+  limpiarRepresentante(usuarios){
+    this.representante = {
+      id: 0,
+      usuarios: usuarios, // O puedes inicializar con un objeto Usuarios vacío si tienes la interfaz definida
+      direccion: '',
+      telefono: '',
+      correo: ''
+    }
+  }
+
+  limpiarEstudiante(usuarios){
+    this.estudiante = {
+      id: 0,
+      usuarios: usuarios, // O puedes inicializar con un objeto Usuarios vacío si tienes la interfaz definida
+      direccion: '',
+      telefono: '',
+      correo: ''
+    }
   }
 
   ingresoCedula(event: any, text) {
@@ -109,6 +122,16 @@ export class CrearMatriculaComponent implements OnInit {
       } else {
         this.formularioRepre = false;
         this.btnConsultarRepre = true;
+        let usuarios = {
+          id: 0,
+          nombres: '',
+          cedula: '',
+          apellidos: '',
+          nacionalidad: '',
+          genero: ''
+    
+        }
+        this.limpiarRepresentante(usuarios);
       }
     } else {
       if (valor.length == 10) {
@@ -116,6 +139,15 @@ export class CrearMatriculaComponent implements OnInit {
       } else {
         this.formularioEstu = false;
         this.btnConsultarEstu = true;
+        let usuarios = {
+          id: 0,
+          nombres: '',
+          cedula: '',
+          apellidos: '',
+          nacionalidad: '',
+          genero: ''
+        }
+        this.limpiarEstudiante(usuarios);
       }
     }
   }
@@ -124,14 +156,12 @@ export class CrearMatriculaComponent implements OnInit {
     if (text === 'repre') {
       this.adminService.getUsuarioMatricula(this.cedulaRepre).subscribe({
         next: restUsuario => {
-          console.log(restUsuario);
           if (restUsuario.code === '404') {
             this.messageService.add({ severity: 'info', summary: 'Información!', detail: 'La cedula no se encuentra registrada' });
             this.formularioRepre = false;
           } else if (restUsuario.code === '200') {
             this.adminService.getRepresentante(restUsuario['message'].id).subscribe({
               next: rest => {
-                console.log(rest);
                 if (rest.code === '200') {
                   this.representante = rest.message;
                   this.representante.usuarios = restUsuario['message'];
@@ -153,14 +183,12 @@ export class CrearMatriculaComponent implements OnInit {
     } else {
       this.adminService.getUsuarioMatricula(this.cedulaEstu).subscribe({
         next: restUsuario => {
-          console.log(restUsuario);
           if (restUsuario.code === '404') {
             this.messageService.add({ severity: 'info', summary: 'Información!', detail: 'La cedula no se encuentra registrada' });
             this.formularioEstu = false;
           } else if (restUsuario.code === '200') {
             this.adminService.getEstudiante(restUsuario['message'].id).subscribe({
               next: rest => {
-                console.log(rest);
                 if (rest.code === '200') {
                   this.estudiante = rest.message;
                   this.estudiante.usuarios = restUsuario['message'];
@@ -216,7 +244,6 @@ export class CrearMatriculaComponent implements OnInit {
       if (this.representante['id'] != (0)) {
         this.adminService.updateRepresentante(this.representante).subscribe({
           next: rest => {
-            console.log(rest);
             if (rest.code === '200') {
               this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Representante actualizado correctamente' });
             }
@@ -228,7 +255,6 @@ export class CrearMatriculaComponent implements OnInit {
       } else {
         this.adminService.createRepresentante(this.representante).subscribe({
           next: rest => {
-            console.log(rest);
             if (rest.code === '200') {
               this.representante['id'] = rest.id;
               this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Representante creado correctamente' });
@@ -250,7 +276,6 @@ export class CrearMatriculaComponent implements OnInit {
       if (this.estudiante['id'] != (0)) {
         this.adminService.updateEstudiante(this.estudiante).subscribe({
           next: rest => {
-            console.log(rest);
             if (rest.code === '200') {
               this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Estudiante actualizado correctamente' });
             }
@@ -262,9 +287,8 @@ export class CrearMatriculaComponent implements OnInit {
       } else {
         this.adminService.createEstudiante(this.estudiante).subscribe({
           next: rest => {
-            console.log(rest);
             if (rest.code === '200') {
-              this.representante['id'] = rest.id;
+              this.estudiante['id'] = rest.id;
               this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Representante creado correctamente' });
             }
           }, error: e => {
@@ -294,7 +318,6 @@ export class CrearMatriculaComponent implements OnInit {
       }
       this.adminService.createMatricula(dato).subscribe({
         next: rest => {
-          console.log(rest);
           if(rest.code === '200'){
             this.messageService.add({ severity:'success', summary: 'Información!', detail: 'Matricula creada correctamente' });
             this.limpiarInterface();

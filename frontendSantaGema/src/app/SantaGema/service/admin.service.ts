@@ -160,4 +160,17 @@ export class AdminService {
     return this.http.post<any>(`${this.apiUrl}createMatricula`,datos);
   }
 
+  updateMatricula(datos: any,id): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}updateMatricula/${id}`,datos)
+  }
+
+  getMatriculasByAnioAndCurso(datos:any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}getMatriculasByAnioAndCurso`,datos);
+  }
+
+  deleteMatricula(ids: number[]): Observable<any> {
+    const body = { ids: ids }; // Crea un objeto con un campo 'ids' que contiene la lista de IDs
+    return this.http.post<any>(`${this.apiUrl}deleteMatricula`, body);
+  }
+
 }

@@ -3,10 +3,12 @@
         <h2>GESTIÓN DE CURSOS</h2>
         <h5>REGISTRO</h5>
         <p-toast key="tst"></p-toast>
-        <div class="p-fluid p-formgrid grid">
+        <div class="p-fluid p-formgrid grid align-items-center">
             <div class="field col-12 md:col-6">
                 <label htmlFor="aLectivo">Nombre del Curso:</label>
                 <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !nomCurso}" [(ngModel)]="nomCurso" pInputText id="aLectivo" type="text" placeholder="Primer curso"/>
+            </div>
+            <div class="field col-12 md:col-2" style="margin-bottom: -2px;">
                 <button pButton pRipple type="button" label="Guardar" (click)="saveCurso()" class="p-button-rounded p-button-success" style="margin-top: 10px;"></button>
             </div>
         </div>        

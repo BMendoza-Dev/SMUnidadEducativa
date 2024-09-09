@@ -10,11 +10,11 @@
             </div>
             <div class="field col-12 md:col-3">
                 <label htmlFor="fInicio">Inicio del Año Lectivo:</label>
-                <p-calendar required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !fechIni}" [(ngModel)]="fechIni" inputId="fInicio" placeholder="dd/mm/YY"></p-calendar>
+                <p-calendar dateFormat="dd/mm/yy" required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !fechIni}" [(ngModel)]="fechIni" inputId="fInicio" placeholder="dd/mm/YY"></p-calendar>
             </div>
             <div class="field col-12 md:col-3">
                 <label htmlFor="fFin">Fin del Año Lectivo:</label>
-                <p-calendar required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !fechFin}" [(ngModel)]="fechFin"  inputId="fFin" placeholder="dd/mm/YY"></p-calendar>
+                <p-calendar dateFormat="dd/mm/yy" required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !fechFin}" [(ngModel)]="fechFin"  inputId="fFin" placeholder="dd/mm/YY"></p-calendar>
             </div>
             <div class="field col-12 md:col-3">
                 <button pButton pRipple type="button" (click)="saveAnioLectivo()" label="Guardar" class="p-button-rounded p-button-success"></button>

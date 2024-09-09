@@ -2,14 +2,14 @@
     <div class="card">
         <h5>Crear Matrícula</h5>
         <div class="p-fluid p-formgrid grid">
-            <div class="field col-12 md:col-6">
+            <div class="field col-12 md:col-4">
                 <label htmlFor="firstname2">Año lectivo</label>
-                <p-autoComplete [(ngModel)]="selectedAlectivo" [dropdown]="true" [suggestions]="filteredAnioLectivos"
+                <p-autoComplete required [(ngModel)]="selectedAlectivo" [dropdown]="true" [suggestions]="filteredAnioLectivos"
                     (completeMethod)="filterALectivo($event)" field="nombre"></p-autoComplete>
             </div>
-            <div class="field col-12 md:col-6">
+            <div class="field col-12 md:col-5">
                 <label htmlFor="firstname2">Curso</label>
-                <p-autoComplete [(ngModel)]="selectedCurso" [dropdown]="true" [suggestions]="filteredCursos"
+                <p-autoComplete required [(ngModel)]="selectedCurso" [dropdown]="true" [suggestions]="filteredCursos"
                     (completeMethod)="filterCurso($event)" field="nombre"></p-autoComplete>
             </div>
             <div class="field col-12 md:col-3">

@@ -179,13 +179,11 @@ export class UsuariosComponent implements OnInit {
       this.adminService.registrarUsuario(this.usuario).subscribe({
         next: rest => {
           if (rest.code == "200") {
-            console.log("Se guardo correctamente");
             this.usuario.id = rest.id;
             
             this.usuarios.push(this.usuario);
             this.messageService.add({ key: 'tst', severity: 'success', summary: 'Éxito!', detail: 'Se proceso correctamente' });
             this.usuarios = [...this.usuarios];
-            // this.usuarioDialog = false;
             this.usuario = {};
             this.validatedForm = false;
           } else {
@@ -244,7 +242,7 @@ editUsuario(usuario: Usuarios) {
   this.usuario = { ...usuario };
   this.usuario.nacionalidad = {name: usuario.nacionalidad, code: usuario.nacionalidad == "Ecuatoriana" ? '1' : '2' };
   this.usuario.genero = {name: usuario.genero, code: usuario.genero == "Masculino" ? '1' : '2' };
-  this.usuario.fecha_nacimiento = this.convertToDate(usuario.fecha_nacimiento);
+  this.usuario.fecha_nacimiento = usuario.fecha_nacimiento
   this.usuarioDialog = true;
 }
 
