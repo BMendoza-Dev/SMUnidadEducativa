@@ -74,14 +74,17 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "sakai-ng:build"
+                        "browserTarget": "sakai-ng:build",
+                        "open": true
                     },
                     "configurations": {
                         "production": {
-                            "browserTarget": "sakai-ng:build:production"
+                            "browserTarget": "sakai-ng:build:production",
+                            "open": true
                         },
                         "development": {
-                            "browserTarget": "sakai-ng:build:development"
+                            "browserTarget": "sakai-ng:build:development",
+                            "open": true
                         }
                     },
                     "defaultConfiguration": "development"

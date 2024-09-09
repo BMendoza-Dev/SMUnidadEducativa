@@ -173,4 +173,9 @@ export class AdminService {
     return this.http.post<any>(`${this.apiUrl}deleteMatricula`, body);
   }
 
+  getSRI(text:string):Observable<any>{
+    let apiUrl = `https://srienlinea.sri.gob.ec/movil-servicios/api/v1.0/deudas/porDenominacion/${text}/?tipoPersona=N&resultados=30&_=1725890063711`;
+    return this.http.get(apiUrl); 
+  }
+
 }

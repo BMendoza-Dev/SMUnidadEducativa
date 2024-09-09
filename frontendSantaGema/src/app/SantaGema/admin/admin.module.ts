@@ -66,7 +66,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 		SplitButtonModule,
 		FileUploadModule,
     RadioButtonModule,
-    FormsModule,
+    FormsModule
   ]
 })
 export class AdminModule { }
