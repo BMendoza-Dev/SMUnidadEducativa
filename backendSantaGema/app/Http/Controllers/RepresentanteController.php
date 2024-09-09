@@ -20,7 +20,7 @@ class RepresentanteController extends Controller
     public function getRepresentante($id){
         $representante = Representante::where('usuario_id', $id)->first();
         if (!$representante) {
-            return response()->json(['message' => 'Usuario no registrado','code' => '404', $id]);
+            return response()->json(['message' => 'Usuario no registrado','code' => '404']);
         }
 
         return response()->json(['message' => $representante,'code' => '200']);

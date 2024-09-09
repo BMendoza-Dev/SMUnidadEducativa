@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::post('registerALectivo', [AnioLectivoController::class,'Register']);
 Route::get('getListALectivo', [AnioLectivoController::class,'getListALectivo']);
 Route::post('updateALectivo', [AnioLectivoController::class,'updateALectivo']);
@@ -49,3 +50,6 @@ Route::post('updateEstudiante', [EstudianteController::class,'updateEstudiante']
 Route::post('createEstudiante', [EstudianteController::class,'createEstudiante']);
 
 Route::post('createMatricula', [MatriculaController::class,'createMatricula']);
+Route::post('getMatriculasByAnioAndCurso', [MatriculaController::class,'getMatriculasByAnioAndCurso']);
+Route::post('deleteMatricula', [MatriculaController::class,'deleteMatricula']);
+Route::post('updateMatricula/{id}', [MatriculaController::class,'updateMatricula']);
