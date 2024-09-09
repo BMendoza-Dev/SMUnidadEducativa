@@ -144,7 +144,6 @@ export class UsuariosComponent implements OnInit {
         this.usuario.nacionalidad = this.usuario.nacionalidad.name;
         this.usuario.nombres = this.usuario.nombres.toUpperCase();
         this.usuario.apellidos = this.usuario.apellidos.toUpperCase();
-        this.usuario.fecha_nacimiento = this.formatDate(this.usuario.fecha_nacimiento);
         
         this.usuarios[this.findIndexById(this.usuario.id)] = this.usuario;
             this.adminService.updateUsuario(this.usuario).subscribe({
