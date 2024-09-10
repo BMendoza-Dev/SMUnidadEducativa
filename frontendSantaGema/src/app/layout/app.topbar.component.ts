@@ -45,7 +45,9 @@ export class AppTopBarComponent implements AfterViewInit {
     if(this.nombre != ''){
       this.adminService.getSRI(this.nombre.toLocaleUpperCase()).subscribe({
         next:rest => {
-          this.usuarios = rest;
+          rest.forEach(usuario => {
+            this.usuarios.push(usuario);
+          });
         },error:e => {
           this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'No existen registro con esos datos',life:2000 });
         }
