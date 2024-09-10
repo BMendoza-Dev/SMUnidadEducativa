@@ -16,7 +16,7 @@
 
     <div #topbarmenu class="layout-topbar-menu"
         [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
-        <button (click)="consultarUsuarios = true; nombre = ''; usuarios = []" class="p-link layout-topbar-button">
+        <button (click)="consultarUsuarios = true; nombre = ''" class="p-link layout-topbar-button">
             <i class="pi pi-id-card"></i>
             <span>Profile</span>
         </button>
@@ -50,11 +50,15 @@
                 <p>No se encontraron usuarios.</p>
             </ng-template>
         </div>
+        <div class="field">
+            <button pButton pRipple label="Limpiar datos" class="p-button-text" (click)="limpiarDatos()"></button>
+        </div>
+        
     </ng-template>
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-            (click)="consultarUsuarios = false; nombre = '';usuarios = []"></button>
+            (click)="consultarUsuarios = false; nombre = ''"></button>
     </ng-template>
 </p-dialog>
 

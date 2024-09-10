@@ -54,4 +54,8 @@ export class AppTopBarComponent implements AfterViewInit {
       this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Alerta!', detail: 'Existe campos vacios', life:2000});
     }
   }
+
+  limpiarDatos(){
+    this.usuarios = [];
+  }
 }
