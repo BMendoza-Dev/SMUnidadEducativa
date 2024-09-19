@@ -10,8 +10,15 @@ class Curso extends Model
     use HasFactory;
     protected $fillable = ['nombre'];
 
-    public function aniolectivo()
+    public function aniosMaterias()
     {
-        return $this->belongsToMany(AnioLectivo::class,'anio_lectivo__cursos');
+        return $this->belongsToMany(AnioLectivo::class, 'anio_curso_materias')
+            ->withPivot('materia_id')
+            ->withTimestamps();
+    }
+
+    public function materias()
+    {
+        return $this->belongsToMany(Materia::class, 'anio_curso_materias');
     }
 }

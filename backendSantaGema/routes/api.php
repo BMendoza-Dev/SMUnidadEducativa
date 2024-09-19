@@ -7,6 +7,7 @@ use App\Http\Controllers\CursoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RepresentanteController;
 use App\Http\Controllers\EstudianteController;
+use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\MatriculaController;
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,11 @@ Route::get('getListCurso', [CursoController::class,'getListCurso']);
 Route::post('updateCurso', [CursoController::class,'updateCurso']);
 Route::post('deleteCurso', [CursoController::class,'deleteCurso']);
 
+Route::post('registerMateria', [MateriaController::class,'Register']);
+Route::get('getListMateria', [MateriaController::class,'getListMateria']);
+Route::post('updateMateria/{id}', [MateriaController::class,'updateMateria']);
+Route::post('deleteMateria', [MateriaController::class,'deleteMateria']);
+
 Route::get('consultarCedula/{cedula}', [UsuarioController::class,'consultarCedula']);
 Route::post('registrarUsuario', [UsuarioController::class,'registrarUsuario']);
 Route::get('getListUsuario', [UsuarioController::class,'getListUsuario']);
@@ -53,3 +59,5 @@ Route::post('createMatricula', [MatriculaController::class,'createMatricula']);
 Route::post('getMatriculasByAnioAndCurso', [MatriculaController::class,'getMatriculasByAnioAndCurso']);
 Route::post('deleteMatricula', [MatriculaController::class,'deleteMatricula']);
 Route::post('updateMatricula/{id}', [MatriculaController::class,'updateMatricula']);
+
+Route::post('attachMateriasToCursoInAnioLectivo', [CursoController::class, 'attachMateriasToCursoInAnioLectivo']);

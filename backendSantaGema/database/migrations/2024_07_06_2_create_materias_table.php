@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAnioLectivoCursosTable extends Migration
+class CreateMateriasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateAnioLectivoCursosTable extends Migration
      */
     public function up()
     {
-        Schema::create('anio_lectivo__cursos', function (Blueprint $table) {
+        Schema::create('materias', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('curso_id')->references('id')->on('cursos')->onDelete('cascade');
-            $table->foreignId('anio_lectivo_id')->references('id')->on('anio_lectivos')->onDelete('cascade');
+            $table->string('nombre');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreateAnioLectivoCursosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('anio_lectivo__cursos');
+        Schema::dropIfExists('materias');
     }
 }

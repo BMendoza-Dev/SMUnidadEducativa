@@ -13,18 +13,9 @@ import { dE } from '@fullcalendar/core/internal-common';
   providers: [MessageService]
 })
 export class CursosComponent implements OnInit{
-  anioLectivosSelect:any[] = [];
-
   constructor(private adminService: AdminService, private messageService: MessageService){}
 
   ngOnInit(): void {
-    this.adminService.getListALectivo().subscribe({
-      next:rest=>{
-        this.anioLectivosSelect = rest['message'];
-      },error:e=>{
-        console.log(e);
-      }
-    })
     this.adminService.getListCurso().subscribe({
         next:data=>{
             this.cursos = data['message'];
@@ -96,7 +87,7 @@ export class CursosComponent implements OnInit{
             next:rest=>{
                 if(rest['code']=="200"){
                     this.curso = {};
-                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Año Lectivo eliminado', life: 3000 });    
+                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Curso eliminado', life: 3000 });    
                 }else{
                     this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información' });
                 }

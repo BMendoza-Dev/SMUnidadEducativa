@@ -178,4 +178,37 @@ export class AdminService {
     return this.http.get(apiUrl); 
   }
 
+  getListMateria(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}getListMateria`);
+  }
+
+  registerMateria(datos: any): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('nombre', datos.nombre);
+
+    return this.http.post<any>(`${this.apiUrl}registerMateria`, formData);
+  }
+
+  updateMateria(datos: any): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('nombre', datos.nombre);
+
+    return this.http.post<any>(`${this.apiUrl}updateMateria/${datos.id}`, formData);
+  }
+
+  deleteMateria(ids: number[]): Observable<any> {
+    const body = { ids: ids }; // Crea un objeto con un campo 'ids' que contiene la lista de IDs
+    return this.http.post<any>(`${this.apiUrl}deleteMateria`, body);
+  }
+
+  attachMateriasToCursoInAnioLectivo(anio_lectivo_id,curso_id,materia_ids:any[]):Observable<any>{
+    const materiaMap_ids = materia_ids.map(materia => materia.id);
+    const body = {
+      anio_lectivo_id: anio_lectivo_id.id,
+      curso_id: curso_id.id,
+      materia_ids: materiaMap_ids
+    }
+    return this.http.post<any>(`${this.apiUrl}attachMateriasToCursoInAnioLectivo`, body);
+  }
+
 }

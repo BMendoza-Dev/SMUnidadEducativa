@@ -10,6 +10,10 @@ export interface Curso {
     nombre?: string;
 }
 
+export interface Materia {
+    id?:number;
+    nombre?: string;
+}
 export interface Usuarios{
     id?:number;
     nombres?: string;

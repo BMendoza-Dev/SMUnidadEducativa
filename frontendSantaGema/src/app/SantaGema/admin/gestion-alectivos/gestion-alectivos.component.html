@@ -1,0 +1,45 @@
+<div class="col-12">
+    <div class="card">
+        <h2>GESTIÓN DE AÑOS LECTIVOS</h2>
+        <h5>REGISTRO</h5>
+        <p-toast key="tst"></p-toast>
+        <form [formGroup]="aLectivoForm" (ngSubmit)="saveALectivos()">
+            <div class="p-fluid p-formgrid grid">
+                <!-- Año lectivo -->
+                <div class="field col-12 md:col-6" [ngClass]="{ 'p-invalid': isFieldInvalid('aLectivo') }">
+                    <label for="aLectivo">Año lectivo</label>
+                    <p-autoComplete formControlName="aLectivo" placeholder="Seleccione un Año Lectivo"
+                        [dropdown]="true" [suggestions]="filteredAnioLectivos" (completeMethod)="filterALectivo($event)"
+                        field="nombre"></p-autoComplete>
+                    <div *ngIf="isFieldInvalid('aLectivo')" class="p-error">El año lectivo es requerido.</div>
+                </div>
+                
+                <!-- Curso -->
+                <div class="field col-12 md:col-6" [ngClass]="{ 'p-invalid': isFieldInvalid('curso') }">
+                    <label for="curso">Cursos</label>
+                    <p-autoComplete formControlName="curso" placeholder="Seleccione un Curso" [dropdown]="true"
+                        [suggestions]="filteredCursos" (completeMethod)="filterCurso($event)"
+                        field="nombre"></p-autoComplete>
+                    <div *ngIf="isFieldInvalid('curso')" class="p-error">El curso es requerido.</div>
+                </div>
+                
+                <!-- Materias -->
+                <div class="field col-12 md:col-6" [ngClass]="{ 'p-invalid': isFieldInvalid('materias') }">
+                    <label for="materias">Materias</label>
+                    <p-multiSelect [options]="materias" formControlName="materias" optionLabel="nombre"
+                        placeholder="Seleccione Materias"></p-multiSelect>
+                    <div *ngIf="isFieldInvalid('materias')" class="p-error">Las materias son requeridas.</div>
+                </div>
+
+                <!-- Botón de Guardar -->
+                <div class="field col-12 md:col-2" style="padding-top: 25px;">
+                    <button pButton pRipple type="submit" label="Guardar" 
+                            class="p-button-rounded p-button-success" 
+                            style="margin-top: 10px;" 
+                            [disabled]="aLectivoForm.invalid">
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

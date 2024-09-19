@@ -32,9 +32,11 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { UsuariosComponent } from './usuarios/usuarios.component';
+import { MateriasComponent } from './materias/materias.component';
+import { GestionAlectivosComponent } from './gestion-alectivos/gestion-alectivos.component';
 
 @NgModule({
-  declarations: [UsuariosComponent, CursosComponent,ALectivoComponent],
+  declarations: [UsuariosComponent, CursosComponent,ALectivoComponent, MateriasComponent, GestionAlectivosComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

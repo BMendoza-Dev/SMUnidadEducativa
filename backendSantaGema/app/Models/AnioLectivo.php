@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class AnioLectivo extends Model
 {
     use HasFactory;
-    protected $fillable = ['nombre', 'anioInicio','anioFin'];
+    protected $fillable = ['nombre', 'anioInicio', 'anioFin'];
 
-    public function cursos()
+    public function cursosMaterias()
     {
-        return $this->belongsToMany(Curso::class,'anio_lectivo__cursos');
+        return $this->belongsToMany(Curso::class, 'anio_curso_materias')
+            ->withPivot('materia_id')
+            ->withTimestamps();
     }
 }
