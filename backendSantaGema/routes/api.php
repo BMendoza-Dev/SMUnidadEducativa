@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnioCursoMateriaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnioLectivoController;
@@ -60,4 +61,8 @@ Route::post('getMatriculasByAnioAndCurso', [MatriculaController::class,'getMatri
 Route::post('deleteMatricula', [MatriculaController::class,'deleteMatricula']);
 Route::post('updateMatricula/{id}', [MatriculaController::class,'updateMatricula']);
 
-Route::post('attachMateriasToCursoInAnioLectivo', [CursoController::class, 'attachMateriasToCursoInAnioLectivo']);
+Route::post('attachMateriasToCursoInAnioLectivo', [AnioCursoMateriaController::class, 'attachMateriasToCursoInAnioLectivo']);
+Route::post('updateMateriasForCursoInAnioLectivo', [AnioCursoMateriaController::class, 'updateMateriasForCursoInAnioLectivo']);
+Route::get('getUniqueAnioLectivos', [AnioCursoMateriaController::class, 'getUniqueAnioLectivos']);
+Route::get('getCursosPorAnioLectivo/{anioLectivoId}', [AnioCursoMateriaController::class, 'getCursosPorAnioLectivo']);
+Route::get('getMateriasPorCursoYAnioLectivo/{anioLectivoId}/{cursoId}', [AnioCursoMateriaController::class, 'getMateriasPorCursoYAnioLectivo']);

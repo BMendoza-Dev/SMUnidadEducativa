@@ -16,12 +16,21 @@ export class GestionAlectivosComponent implements OnInit {
   filteredAnioLectivos: any[] | undefined;
   filteredCursos: any[] | undefined;
   aLectivoForm: FormGroup;
+  aLectivoUpdForm: FormGroup;
   submitted: boolean = false;
-
+  submittedUpd: boolean = false;
+  activeIndex: number = 0;
 
   aniolectivos: any[] | undefined;
   cursos: any[] | undefined;
   materias: any[] | undefined;
+
+  filteredAnioLectivosUpd: any[] | undefined;
+  filteredCursosUpd: any[] | undefined;
+
+  aniolectivosUpd: any[] | undefined;
+  cursosUpd: any[] | undefined;
+  materiasUpd: any[] | undefined;
   constructor(private messageService: MessageService, private adminService: AdminService, private fb: FormBuilder) {
 
   }
@@ -33,11 +42,100 @@ export class GestionAlectivosComponent implements OnInit {
       materias: [null, Validators.required]
     });
 
+    this.aLectivoUpdForm = this.fb.group({
+      aLectivoUpd: [null, Validators.required],
+      cursoUpd: [null, Validators.required],
+      materiasUpd: [null, Validators.required]
+    });
     this.getListALectivo();
     this.getListCurso();
     this.getListMateria();
   }
 
+  register() {
+    this.getListALectivo();
+    this.getListCurso();
+    this.getListMateria();
+  }
+
+  getListALectivoUpd() {
+    this.adminService.getUniqueAnioLectivos().subscribe({
+      next: rest => {
+        if (rest['code'] == 200) {
+          this.aniolectivosUpd = rest.message;
+        } else if (rest['code'] == 404) {
+          this.messageService.add({ key: 'tst', severity: 'info', summary: 'Éxito!', detail: 'No existen años lectivos registrados', life: 10000 });
+        }
+      },
+      error: err => {
+        this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información', life: 10000 });
+        console.error(err)
+      }
+
+    })
+  }
+
+  update() {
+    this.getListALectivoUpd();
+  }
+
+  getListCursoUpd() {
+    this.adminService.getCursosPorAnioLectivo(this.idAlectivo).subscribe({
+      next: rest => {
+        if (rest['code'] == 200) {
+          this.cursosUpd = rest.message;
+        } else if (rest['code'] == 404) {
+          this.messageService.add({ key: 'tst', severity: 'info', summary: 'Éxito!', detail: 'No existen cursos registrados', life: 10000 });
+        }
+      },
+      error: err => {
+        this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información', life: 10000 });
+        console.error(err)
+      }
+    })
+  }
+
+  getListMateriaUpd(){
+    this.adminService.getMateriasPorCursoYAnioLectivo(this.idAlectivo,this.idCurso).subscribe({
+      next: rest => {
+        if (rest['code'] == 200) {
+          this.materiasUpd = rest.message;
+          this.aLectivoUpdForm.patchValue({
+            materiasUpd: this.materiasUpd
+          }); 
+        } else if (rest['code'] == 404) {
+          this.messageService.add({ key: 'tst', severity: 'info', summary: 'Éxito!', detail: 'No existen materias registradas', life: 10000 });
+        }
+      },
+      error: err => {
+        this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información', life: 10000 });
+        console.error(err)
+      }
+    })
+  }
+
+  idAlectivo:any
+  onSelectALectivo(event: any) {
+    this.idAlectivo = event.id;
+    this.aLectivoUpdForm.get('cursoUpd')?.reset();
+    this.getListCursoUpd();
+  }
+
+  idCurso:any
+  onSelectCurso(event: any) {
+    this.idCurso = event.id;
+    this.aLectivoUpdForm.get('materiasUpd')?.reset();
+    this.getListMateriaUpd()
+  }
+
+  onTabChange(event: any) {
+    const index = event.index; // Obtiene el índice de la pestaña seleccionada
+    if (index === 1) {
+      this.update(); // Ejecuta la función update si es la segunda pestaña
+    } else if (index === 0) {
+      this.register();
+    }
+  }
   getListALectivo(): void {
     this.adminService.getListALectivo().subscribe({
       next: data => {
@@ -104,9 +202,46 @@ export class GestionAlectivosComponent implements OnInit {
           filtered.push(curso);
         }
       }
+
     }
 
     this.filteredCursos = filtered;
+  }
+
+  filterALectivoUpd(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    // Verificamos que `this.cursos` es un array
+    if (this.aniolectivosUpd && Array.isArray(this.aniolectivosUpd)) {
+      for (let i = 0; i < this.aniolectivosUpd.length; i++) {
+        let aniolectivosUpd = this.aniolectivosUpd[i];
+        // Filtra los cursos que comiencen con el texto ingresado (case insensitive)
+        if (aniolectivosUpd.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
+          filtered.push(aniolectivosUpd);
+        }
+      }
+    }
+
+    this.filteredAnioLectivosUpd = filtered;
+  }
+
+  filterCursoUpd(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    // Verificamos que `this.cursos` es un array
+    if (this.cursosUpd && Array.isArray(this.cursosUpd)) {
+      for (let i = 0; i < this.cursosUpd.length; i++) {
+        let cursosUpd = this.cursosUpd[i];
+        // Filtra los cursos que comiencen con el texto ingresado (case insensitive)
+        if (cursosUpd.nombre.toLowerCase().indexOf(query.toLowerCase()) === 0) {
+          filtered.push(cursosUpd);
+        }
+      }
+    }
+
+    this.filteredCursosUpd = filtered;
   }
 
 
@@ -121,9 +256,18 @@ export class GestionAlectivosComponent implements OnInit {
       const formValues = this.aLectivoForm.value;
       this.adminService.attachMateriasToCursoInAnioLectivo(formValues.aLectivo, formValues.curso, formValues.materias).subscribe({
         next: rest => {
-          debugger
+          if (rest['code'] == 200) {
+            this.aLectivoForm.reset();
+            this.submitted = false;  // Resetea el formulario
+            this.messageService.add({ key: 'tst', severity: 'success', summary: 'Éxito!', detail: 'Se proceso correctamente', life: 10000 });
+          } else if (rest['code'] == 409) {
+            this.messageService.add({ key: 'tst', severity: 'info', summary: 'Éxito!', detail: 'Este año lectivo ya cuenta con este curso registrado', life: 10000 });
+          } else {
+            this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información', life: 10000 });
+          }
         }, error: e => {
           console.log(e);
+          this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información', life: 10000 });
         }
       });
       // Lógica adicional para guardar los datos
@@ -131,4 +275,32 @@ export class GestionAlectivosComponent implements OnInit {
       console.log('El formulario no es válido');
     }
   }
+
+  updateALectivos() {
+    this.submittedUpd = true; // Marca el formulario como enviado
+    if (this.aLectivoUpdForm.valid) {
+      const formValues = this.aLectivoUpdForm.value;
+      this.adminService.updateMateriasForCursoInAnioLectivo(formValues.aLectivoUpd, formValues.cursoUpd, formValues.materiasUpd).subscribe({
+        next: rest => {
+          if (rest['code'] == 200) {
+            this.aLectivoUpdForm.reset();
+            this.submitted = false;  // Resetea el formulario
+            this.messageService.add({ key: 'tst', severity: 'success', summary: 'Éxito!', detail: 'Se proceso correctamente', life: 10000 });
+          } else if (rest['code'] == 409) {
+            this.messageService.add({ key: 'tst', severity: 'info', summary: 'Éxito!', detail: 'Este año lectivo ya cuenta con este curso registrado', life: 10000 });
+          } else {
+            this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información', life: 10000 });
+          }
+        }, error: e => {
+          console.log(e);
+          this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información', life: 10000 });
+        }
+      });
+      // Lógica adicional para guardar los datos
+    } else {
+      console.log('El formulario no es válido');
+    }
+  }
+
+
 }

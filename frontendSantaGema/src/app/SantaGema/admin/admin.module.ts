@@ -34,6 +34,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { MateriasComponent } from './materias/materias.component';
 import { GestionAlectivosComponent } from './gestion-alectivos/gestion-alectivos.component';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [UsuariosComponent, CursosComponent,ALectivoComponent, MateriasComponent, GestionAlectivosComponent],
@@ -68,7 +69,8 @@ import { GestionAlectivosComponent } from './gestion-alectivos/gestion-alectivos
 		SplitButtonModule,
 		FileUploadModule,
     RadioButtonModule,
-    FormsModule
+    FormsModule,
+    TabViewModule
   ]
 })
 export class AdminModule { }

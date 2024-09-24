@@ -15,10 +15,6 @@ export class AdminService {
 
   constructor(private http: HttpClient) { }
 
-  // getDatos(): Observable<any> {
-  //   return this.http.get<any>(`${this.apiUrl}/ruta-get`);
-  // }
-
   registerALectivo(datos: any): Observable<any> {
 
     const formData: FormData = new FormData();
@@ -33,6 +29,10 @@ export class AdminService {
     return this.http.get<any>(`${this.apiUrl}getListALectivo`);
   }
 
+  getUniqueAnioLectivos(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}getUniqueAnioLectivos`);
+  }
+
   updateALectivo(datos: any): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('nombre', datos.nombre); // Agrega otros datos aquí
@@ -44,10 +44,8 @@ export class AdminService {
   }
 
   deleteALectivo(ids: number[]): Observable<any> {
-
     const body = { ids: ids }; // Crea un objeto con un campo 'ids' que contiene la lista de IDs
     return this.http.post<any>(`${this.apiUrl}deleteALectivo`, body);
-    // return this.http.delete<any>(`${this.apiUrl}deleteALectivo/${id}`);
   }
 
   getListCurso(): Observable<any> {
@@ -72,12 +70,10 @@ export class AdminService {
   deleteCurso(ids: number[]): Observable<any> {
     const body = { ids: ids }; // Crea un objeto con un campo 'ids' que contiene la lista de IDs
     return this.http.post<any>(`${this.apiUrl}deleteCurso`, body);
-    // return this.http.delete<any>(`${this.apiUrl}deleteALectivo/${id}`);
   }
 
   consultarCedula(cedula: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}consultarCedula/${cedula}`);
-    // return this.http.delete<any>(`${this.apiUrl}deleteALectivo/${id}`);
   }
 
   registrarUsuario(datos: Usuarios): Observable<any> {
@@ -115,7 +111,7 @@ export class AdminService {
     return this.http.post<any>(`${this.apiUrl}updateUsuario`, formData);
   }
 
-  getUsuarioMatricula(cedula: string):Observable<any> {
+  getUsuarioMatricula(cedula: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}getUsuarioMatricula/${cedula}`);
   }
 
@@ -135,15 +131,15 @@ export class AdminService {
     formData.append('direccion', datos.direccion);
     formData.append('usuario_id', datos.usuarios.id);
 
-    return this.http.post<any>(`${this.apiUrl}createRepresentante`,formData);
+    return this.http.post<any>(`${this.apiUrl}createRepresentante`, formData);
   }
 
   updateRepresentante(datos: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}updateRepresentante`,datos);
+    return this.http.post<any>(`${this.apiUrl}updateRepresentante`, datos);
   }
 
   updateEstudiante(datos: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}updateEstudiante`,datos);
+    return this.http.post<any>(`${this.apiUrl}updateEstudiante`, datos);
   }
 
   createEstudiante(datos: any): Observable<any> {
@@ -153,19 +149,19 @@ export class AdminService {
     formData.append('direccion', datos.direccion);
     formData.append('usuario_id', datos.usuarios.id);
 
-    return this.http.post<any>(`${this.apiUrl}createEstudiante`,formData);
+    return this.http.post<any>(`${this.apiUrl}createEstudiante`, formData);
   }
 
   createMatricula(datos: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}createMatricula`,datos);
+    return this.http.post<any>(`${this.apiUrl}createMatricula`, datos);
   }
 
-  updateMatricula(datos: any,id): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}updateMatricula/${id}`,datos)
+  updateMatricula(datos: any, id): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}updateMatricula/${id}`, datos)
   }
 
-  getMatriculasByAnioAndCurso(datos:any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}getMatriculasByAnioAndCurso`,datos);
+  getMatriculasByAnioAndCurso(datos: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}getMatriculasByAnioAndCurso`, datos);
   }
 
   deleteMatricula(ids: number[]): Observable<any> {
@@ -173,9 +169,9 @@ export class AdminService {
     return this.http.post<any>(`${this.apiUrl}deleteMatricula`, body);
   }
 
-  getSRI(text:string):Observable<any>{
+  getSRI(text: string): Observable<any> {
     let apiUrl = `https://srienlinea.sri.gob.ec/movil-servicios/api/v1.0/deudas/porDenominacion/${text}/?tipoPersona=N&resultados=30&_=1725890063711`;
-    return this.http.get(apiUrl); 
+    return this.http.get(apiUrl);
   }
 
   getListMateria(): Observable<any> {
@@ -201,7 +197,7 @@ export class AdminService {
     return this.http.post<any>(`${this.apiUrl}deleteMateria`, body);
   }
 
-  attachMateriasToCursoInAnioLectivo(anio_lectivo_id,curso_id,materia_ids:any[]):Observable<any>{
+  attachMateriasToCursoInAnioLectivo(anio_lectivo_id, curso_id, materia_ids: any[]): Observable<any> {
     const materiaMap_ids = materia_ids.map(materia => materia.id);
     const body = {
       anio_lectivo_id: anio_lectivo_id.id,
@@ -210,5 +206,25 @@ export class AdminService {
     }
     return this.http.post<any>(`${this.apiUrl}attachMateriasToCursoInAnioLectivo`, body);
   }
+
+  getCursosPorAnioLectivo(anioLectivoId): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}getCursosPorAnioLectivo/${anioLectivoId}`);
+  }
+
+  getMateriasPorCursoYAnioLectivo(anioLectivoId,cursoId): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}getMateriasPorCursoYAnioLectivo/${anioLectivoId}/${cursoId}`);
+  }
+
+  updateMateriasForCursoInAnioLectivo(anio_lectivo_id, curso_id, materia_ids: any[]): Observable<any> {
+    const materiaMap_ids = materia_ids.map(materia => materia.id);
+    const body = {
+      anio_lectivo_id: anio_lectivo_id.id,
+      curso_id: curso_id.id,
+      materia_ids: materiaMap_ids
+    }
+    return this.http.post<any>(`${this.apiUrl}updateMateriasForCursoInAnioLectivo`, body);
+  }
+
+
 
 }

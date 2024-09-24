@@ -7,37 +7,37 @@ import { Table } from 'primeng/table';
 import { dE } from '@fullcalendar/core/internal-common';
 
 @Component({
-  selector: 'app-cursos',
-  templateUrl: './cursos.component.html',
-  styleUrls: ['./cursos.component.scss'],
-  providers: [MessageService]
+    selector: 'app-cursos',
+    templateUrl: './cursos.component.html',
+    styleUrls: ['./cursos.component.scss'],
+    providers: [MessageService]
 })
-export class CursosComponent implements OnInit{
-  constructor(private adminService: AdminService, private messageService: MessageService){}
+export class CursosComponent implements OnInit {
+    constructor(private adminService: AdminService, private messageService: MessageService) { }
 
-  ngOnInit(): void {
-    this.adminService.getListCurso().subscribe({
-        next:data=>{
-            this.cursos = data['message'];
-            
-            this.cols = [
-                { field: 'id', header: 'ID' },
-                { field: 'nombre', header: 'Nombre' },
-            ];
-        }
-    }) 
-  }
+    ngOnInit(): void {
+        this.adminService.getListCurso().subscribe({
+            next: data => {
+                this.cursos = data['message'];
 
-  //CRUD
+                this.cols = [
+                    { field: 'id', header: 'ID' },
+                    { field: 'nombre', header: 'Nombre' },
+                ];
+            }
+        })
+    }
 
-    nomCurso:any="";
+    //CRUD
 
-    clearVariable(){
+    nomCurso: any = "";
+
+    clearVariable() {
         this.nomCurso = "";
         this.validatedForm = false;
     }
 
-    validatedForm:boolean=false;
+    validatedForm: boolean = false;
 
     cursoDialog: boolean = false;
 
@@ -84,40 +84,40 @@ export class CursosComponent implements OnInit{
             this.curso.id
         ]
         this.adminService.deleteCurso(ids).subscribe({
-            next:rest=>{
-                if(rest['code']=="200"){
+            next: rest => {
+                if (rest['code'] == "200") {
                     this.curso = {};
-                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Curso eliminado', life: 3000 });    
-                }else{
+                    this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Curso eliminado', life: 3000 });
+                } else {
                     this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información' });
                 }
-            },error:e=>{
+            }, error: e => {
                 window.location.reload();
                 console.log(e);
             }
         })
-        
+
     }
 
     confirmDeleteSelected() {
         this.deleteCursosDialog = false;
-        this.selectedCursos; 
+        this.selectedCursos;
         let listaIds = this.selectedCursos.map(curso => curso.id);
         this.adminService.deleteCurso(listaIds).subscribe({
-            next:rest=> {
-                if(rest['code']=="200"){
+            next: rest => {
+                if (rest['code'] == "200") {
                     this.cursos = this.cursos.filter(val => !this.selectedCursos.includes(val));
                     this.selectedCursos = [];
                     this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Cursos eliminados', life: 3000 });
-                }else{
+                } else {
                     this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información' });
                 }
-                
-            },error:e=>{
+
+            }, error: e => {
                 console.log(e)
             }
         })
-        
+
     }
 
     hideDialog() {
@@ -129,15 +129,15 @@ export class CursosComponent implements OnInit{
         this.submitted = true;
         this.validatedForm = true
         if (this.curso.id) {
-            if(this.curso.nombre != ""){
+            if (this.curso.nombre != "") {
                 this.cursos[this.findIndexById(this.curso.id)] = this.curso;
                 this.adminService.updateCurso(this.curso).subscribe({
-                    next:rest => {
-                        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Curso actualizado', life: 3000 });    
+                    next: rest => {
+                        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Curso actualizado', life: 3000 });
                         this.cursos = [...this.cursos];
                         this.cursoDialog = false;
                         this.curso = {};
-                    },error:e=>{
+                    }, error: e => {
                         this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información' });
                         setTimeout(() => {
                             window.location.reload();
@@ -145,32 +145,32 @@ export class CursosComponent implements OnInit{
                         }, 2000);
                     }
                 })
-            }else{
-                this.submitted=true;
+            } else {
+                this.submitted = true;
                 this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Alerta!', detail: 'Existe campos vacios' });
             }
         } else {
             this.curso = {
                 nombre: this.nomCurso,
             }
-            
-            if(this.curso.nombre != ""){
+
+            if (this.curso.nombre != "") {
                 this.adminService.registerCurso(this.curso).subscribe({
-                    next:rest=>{
-                        if(rest.code == "200"){
+                    next: rest => {
+                        if (rest.code == "200") {
                             this.curso.id = rest.id;
-                            this.cursos.push(this.curso);                
+                            this.cursos.push(this.curso);
                             this.messageService.add({ key: 'tst', severity: 'success', summary: 'Éxito!', detail: 'Se proceso correctamente' });
                             this.cursos = [...this.cursos];
                             this.cursoDialog = false;
                             this.curso = {};
                             this.validatedForm = false;
-                        }else{
+                        } else {
                             window.location.reload();
                             this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información' });
                         }
                         this.clearVariable();
-                    },error:e=>{
+                    }, error: e => {
                         setTimeout(() => {
                             window.location.reload();
                             console.log(e);
@@ -178,8 +178,8 @@ export class CursosComponent implements OnInit{
                         this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información' });
                     }
                 })
-            }else{
-                this.validatedForm=true;
+            } else {
+                this.validatedForm = true;
                 this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Alerta!', detail: 'Existe campos vacios' });
             }
         }
