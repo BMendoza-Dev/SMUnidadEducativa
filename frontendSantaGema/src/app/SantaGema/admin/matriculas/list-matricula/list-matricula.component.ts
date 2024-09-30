@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { MessageService } from 'primeng/api';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { AdminService } from 'src/app/SantaGema/service/admin.service';
@@ -38,7 +39,7 @@ export class ListMatriculaComponent {
     { name: 'Paterno', code: 'Paterno' },
     { name: 'Otros', code: 'Otros' }
   ];
-  constructor(private adminService: AdminService, private messageService: MessageService) { }
+  constructor(private adminService: AdminService, private messageService: MessageService, private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     let usuarios = {
@@ -91,8 +92,8 @@ export class ListMatriculaComponent {
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.aniolectivos as any[]).length; i++) {
-      let alectivo = (this.aniolectivos as any[])[i];
+    for (let i = 0; i < (this.aniolectivosEdit as any[]).length; i++) {
+      let alectivo = (this.aniolectivosEdit as any[])[i];
       if (alectivo.nombre.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(alectivo);
       }
@@ -122,8 +123,8 @@ export class ListMatriculaComponent {
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.cursos as any[]).length; i++) {
-      let curso = (this.cursos as any[])[i];
+    for (let i = 0; i < (this.cursosEdit as any[]).length; i++) {
+      let curso = (this.cursosEdit as any[])[i];
       if (curso.nombre.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(curso);
       }
@@ -139,6 +140,7 @@ export class ListMatriculaComponent {
       error: err => console.error(err)
     });
   }
+  
   cargarCursos(): void {
     this.adminService.getListCurso().subscribe({
       next: rest => {
@@ -147,16 +149,46 @@ export class ListMatriculaComponent {
       error: err => console.error(err)
     })
   }
+  aniolectivosEdit: ALectivo[] | undefined;
+
+  cargarAlectivosEdit(){
+    this.adminService.getUniqueAnioLectivos().subscribe({
+      next: rest => {
+        this.aniolectivosEdit = rest.message;
+        this.cargarCursosEdit();
+      },
+      error: err => console.error(err)
+    });
+  }
+
+  cursosEdit: Curso[] | undefined;
+
+  cargarCursosEdit(): void {
+    this.adminService.getCursosPorAnioLectivo(this.selectedAlectivoEdit.id).subscribe({
+      next: rest => {
+        if (rest['code'] == 200) {
+          this.cursosEdit = rest.message;
+        } else if (rest['code'] == 404) {
+          this.messageService.add({ key: 'tst', severity: 'info', summary: 'Éxito!', detail: 'No existen cursos registrados', life: 10000 });
+        }
+      },
+      error: err => {
+        this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información', life: 10000 });
+        console.error(err)
+      }
+    })
+  }
 
   cargarMatritulas() {
     let datos = {
-      anio_lectivo_id: this.selectedAlectivo.id,
-      curso_id: this.selectedCurso.id
+      anio_lectivo_id: this.selectedAlectivo?.id ? this.selectedAlectivo.id : 0,
+      curso_id: this.selectedCurso?.id ? this.selectedCurso.id : 0
     }
     this.listaMatriculas(datos);
   }
 
   listaMatriculas(datos) {
+    this.spinner.show();
     this.adminService.getMatriculasByAnioAndCurso(datos).subscribe({
       next: rest => {
         if (rest.code != '404') {
@@ -175,6 +207,8 @@ export class ListMatriculaComponent {
             detail: 'No existen matriculas registradas'
           });
         }
+
+        this.spinner.hide();
       },
       error: err => console.error(err)
     })
@@ -240,6 +274,7 @@ export class ListMatriculaComponent {
   editMatricula(matricula: any) {
     this.matricula = { ...matricula };
     this.matriculaDialog = true;
+    this.cargarAlectivosEdit();
     this.selectedAlectivoEdit = matricula.aniolectivo;
     this.selectedCursoEdit = matricula.curso;
     this.matriculaNum = matricula.matriculaNum;
@@ -461,14 +496,18 @@ export class ListMatriculaComponent {
         curso_id: this.selectedCursoEdit.id
       }
       let idMatricula =  this.matricula.id;
+      this.spinner.show();
       this.adminService.updateMatricula(dato,idMatricula).subscribe({
         next: rest => {
           if(rest.code === '200'){
             this.messageService.add({ severity:'success', summary: 'Información!', detail: 'Matricula actualizada correctamente' });
             this.limpiarInterface();
           }
+          this.cargarMatritulas();
+          this.spinner.hide();
         }, error: e => {
           console.log(e);
+          this.spinner.hide();
           this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'Error al actualizar la matricula' });
         }
       })

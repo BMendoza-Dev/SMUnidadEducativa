@@ -4,12 +4,12 @@
         <div class="p-fluid p-formgrid grid">
             <div class="field col-12 md:col-4">
                 <label htmlFor="firstname2">Año lectivo</label>
-                <p-autoComplete required [(ngModel)]="selectedAlectivo" [dropdown]="true" [suggestions]="filteredAnioLectivos"
+                <p-autoComplete (onSelect)="onSelectALectivo($event)" required [(ngModel)]="selectedAlectivo" [dropdown]="true" [suggestions]="filteredAnioLectivos"
                     (completeMethod)="filterALectivo($event)" field="nombre"></p-autoComplete>
             </div>
             <div class="field col-12 md:col-5">
                 <label htmlFor="firstname2">Curso</label>
-                <p-autoComplete required [(ngModel)]="selectedCurso" [dropdown]="true" [suggestions]="filteredCursos"
+                <p-autoComplete required [(ngModel)]="selectedCurso" [disabled]="cursoDisabled" [dropdown]="true" [suggestions]="filteredCursos"
                     (completeMethod)="filterCurso($event)" field="nombre"></p-autoComplete>
             </div>
             <div class="field col-12 md:col-3">
@@ -157,3 +157,7 @@
 </div>
 
 <p-toast></p-toast>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#08b549" type="ball-fussion" [fullScreen]="true">
+    <p style="color: #08b549"> Cargando... </p>
+</ngx-spinner>

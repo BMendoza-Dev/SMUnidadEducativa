@@ -32,6 +32,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { AccordionModule } from 'primeng/accordion';
 import { ListMatriculaComponent } from './list-matricula/list-matricula.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { ListMatriculaComponent } from './list-matricula/list-matricula.componen
 		FileUploadModule,
     RadioButtonModule,
     FormsModule,
-    AccordionModule 
+    AccordionModule,
+    NgxSpinnerModule 
   ]
 })
 export class MatriculasModule { }

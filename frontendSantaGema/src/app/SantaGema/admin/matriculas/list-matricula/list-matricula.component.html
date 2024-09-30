@@ -23,7 +23,7 @@
 <div class="grid">
     <div class="col-12">
         <div class="card px-6 py-6">
-            <p-toast></p-toast>
+
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
@@ -119,7 +119,7 @@
                         <div class="field col-12 md:col-4">
                             <label htmlFor="firstname2">Año lectivo</label>
                             <p-autoComplete required [(ngModel)]="selectedAlectivoEdit" [dropdown]="true"
-                                [suggestions]="filteredAnioLectivosEdit" (completeMethod)="filterALectivoEdit($event)"
+                                [suggestions]="filteredAnioLectivosEdit"  (onSelect)="cargarCursosEdit($event); selectedCursoEdit = []" (completeMethod)="filterALectivoEdit($event)"
                                 field="nombre"></p-autoComplete>
                         </div>
                         <div class="field col-12 md:col-5">
@@ -135,7 +135,7 @@
                         </div>
                     </div>
                 </div>
-                <p-accordion [multiple]="true" [activeIndex]="[0]"  [ngStyle]="{ 'width': '100%' }">
+                <p-accordion [multiple]="true" [activeIndex]="[0]" [ngStyle]="{ 'width': '100%' }">
                     <p-accordionTab header="REPRESENTANTE">
                         <div class="p-fluid p-formgrid grid">
                             <div class="col-12 md:col-6">
@@ -147,7 +147,7 @@
                                 </div>
                             </div>
                         </div>
-                
+
                         <div *ngIf="formularioRepre" class="p-fluid p-formgrid grid" style="margin-top: 15px;">
                             <div class="col-12 md:col-4">
                                 <label htmlFor="firstname">Nombres</label>
@@ -182,26 +182,30 @@
                             </div>
                             <div class="field col-12 md:col-6">
                                 <label htmlFor="lastname">Dirección</label>
-                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.direccion}"
+                                <input required
+                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.direccion}"
                                     [(ngModel)]="representante.direccion" pInputText id="direccion" type="text"
                                     placeholder="Direccion..." />
                             </div>
                             <div class="field col-12 md:col-2">
                                 <label htmlFor="lastname">Telefono</label>
-                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.telefono}"
+                                <input required
+                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.telefono}"
                                     [(ngModel)]="representante.telefono" pInputText id="telefono" type="text"
                                     placeholder="Telefono..." />
-                            </div> 
+                            </div>
                             <div class="field col-12 md:col-4">
                                 <label htmlFor="lastname">Correo</label>
-                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.correo}"
+                                <input required
+                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.correo}"
                                     [(ngModel)]="representante.correo" pInputText id="correo" type="text"
                                     placeholder="Correo..." />
                             </div>
                         </div>
                         <div *ngIf="formularioRepre" class="p-fluid p-formgrid grid">
                             <div class="field col-12 md:col-3">
-                                <button pButton pRipple type="button" (click)="actualizarRepresentante()" label="Actualizar"></button>
+                                <button pButton pRipple type="button" (click)="actualizarRepresentante()"
+                                    label="Actualizar"></button>
                             </div>
                         </div>
                     </p-accordionTab>
@@ -244,26 +248,30 @@
                             </div>
                             <div class="field col-12 md:col-6">
                                 <label htmlFor="lastname">Dirección</label>
-                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.direccion}"
+                                <input required
+                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.direccion}"
                                     [(ngModel)]="estudiante.direccion" pInputText id="direccion" type="text"
                                     placeholder="Direccion..." />
                             </div>
                             <div class="field col-12 md:col-2">
                                 <label htmlFor="lastname">Telefono</label>
-                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.telefono}"
+                                <input required
+                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.telefono}"
                                     [(ngModel)]="estudiante.telefono" pInputText id="telefono" type="text"
                                     placeholder="Telefono..." />
-                            </div> 
+                            </div>
                             <div class="field col-12 md:col-4">
                                 <label htmlFor="lastname">Correo</label>
-                                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.correo}"
+                                <input required
+                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.correo}"
                                     [(ngModel)]="estudiante.correo" pInputText id="correo" type="text"
                                     placeholder="Correo..." />
                             </div>
                         </div>
                         <div *ngIf="formularioEstu" class="p-fluid p-formgrid grid">
                             <div class="field col-12 md:col-3">
-                                <button pButton pRipple type="button" (click)="actualizarEstudiante()" label="Actualizar"></button>
+                                <button pButton pRipple type="button" (click)="actualizarEstudiante()"
+                                    label="Actualizar"></button>
                             </div>
                         </div>
                     </p-accordionTab>
@@ -303,3 +311,10 @@
         </p-dialog>
     </div>
 </div>
+
+
+<p-toast></p-toast>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#08b549" type="ball-fussion" [fullScreen]="true">
+    <p style="color: #08b549"> Cargando... </p>
+</ngx-spinner>

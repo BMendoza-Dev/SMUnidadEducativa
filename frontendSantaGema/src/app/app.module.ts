@@ -19,7 +19,7 @@ import { DialogModule } from 'primeng/dialog';
     ],
     imports: [
         AppRoutingModule,
-        AppLayoutModule
+        AppLayoutModule,
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
