@@ -20,6 +20,7 @@ class CreateMatriculasTable extends Migration
             $table->foreignId('representante_id')->nullable()->constrained('representantes')->onDelete('set null');
             $table->foreignId('anio_lectivo_id')->nullable()->constrained('anio_lectivos')->onDelete('set null');
             $table->foreignId('curso_id')->nullable()->constrained('cursos')->onDelete('set null');
+            $table->decimal('promedio', 4, 2)->nullable();
             $table->timestamps();
         });
     }

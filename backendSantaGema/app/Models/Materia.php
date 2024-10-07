@@ -15,4 +15,9 @@ class Materia extends Model
         return $this->belongsToMany(Curso::class, 'anio_curso_materias');
     }
 
+    public function notas()
+    {
+        return $this->hasMany(Nota::class, 'materia_id');
+    }
+
 }

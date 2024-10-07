@@ -45,6 +45,14 @@ export class AppMenuComponent implements OnInit {
                                 label: 'Lista Matrículas', icon: 'pi pi-fw pi-list', routerLink: ['/admin/Matriculas/lista-matricula'],
                             }
                         ]
+                    },
+                    {
+                        label: 'Gestión Notas', icon: 'pi pi-fw pi-file-edit',
+                        items: [
+                            {
+                                label: 'Registro de notas', icon: 'pi pi-fw pi-id-card', routerLink: ['/admin/GestionNotas/registrar-notas'],
+                            }
+                        ]
                     }
                 ],
             }

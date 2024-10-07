@@ -10,6 +10,8 @@ use App\Http\Controllers\RepresentanteController;
 use App\Http\Controllers\EstudianteController;
 use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\MatriculaController;
+use App\Http\Controllers\NotaController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -60,9 +62,13 @@ Route::post('createMatricula', [MatriculaController::class,'createMatricula']);
 Route::post('getMatriculasByAnioAndCurso', [MatriculaController::class,'getMatriculasByAnioAndCurso']);
 Route::post('deleteMatricula', [MatriculaController::class,'deleteMatricula']);
 Route::post('updateMatricula/{id}', [MatriculaController::class,'updateMatricula']);
+Route::post('getMatriculasByAnioAndCursoParaMaterias', [MatriculaController::class, 'getMatriculasByAnioAndCursoParaMaterias']);
 
 Route::post('attachMateriasToCursoInAnioLectivo', [AnioCursoMateriaController::class, 'attachMateriasToCursoInAnioLectivo']);
 Route::post('updateMateriasForCursoInAnioLectivo', [AnioCursoMateriaController::class, 'updateMateriasForCursoInAnioLectivo']);
 Route::get('getUniqueAnioLectivos', [AnioCursoMateriaController::class, 'getUniqueAnioLectivos']);
 Route::get('getCursosPorAnioLectivo/{anioLectivoId}', [AnioCursoMateriaController::class, 'getCursosPorAnioLectivo']);
 Route::get('getMateriasPorCursoYAnioLectivo/{anioLectivoId}/{cursoId}', [AnioCursoMateriaController::class, 'getMateriasPorCursoYAnioLectivo']);
+
+Route::post('agregarNota',[NotaController::class, 'agregarNota']);
+Route::get('obtenerNotas/{idMatricula}',[NotaController::class, 'obtenerNotas']);

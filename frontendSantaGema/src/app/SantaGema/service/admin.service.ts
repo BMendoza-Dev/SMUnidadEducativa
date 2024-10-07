@@ -164,6 +164,10 @@ export class AdminService {
     return this.http.post<any>(`${this.apiUrl}getMatriculasByAnioAndCurso`, datos);
   }
 
+  getMatriculasByAnioAndCursoParaMaterias(datos: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}getMatriculasByAnioAndCursoParaMaterias`, datos);
+  }
+
   deleteMatricula(ids: number[]): Observable<any> {
     const body = { ids: ids }; // Crea un objeto con un campo 'ids' que contiene la lista de IDs
     return this.http.post<any>(`${this.apiUrl}deleteMatricula`, body);
@@ -211,7 +215,7 @@ export class AdminService {
     return this.http.get<any>(`${this.apiUrl}getCursosPorAnioLectivo/${anioLectivoId}`);
   }
 
-  getMateriasPorCursoYAnioLectivo(anioLectivoId,cursoId): Observable<any> {
+  getMateriasPorCursoYAnioLectivo(anioLectivoId, cursoId): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}getMateriasPorCursoYAnioLectivo/${anioLectivoId}/${cursoId}`);
   }
 
@@ -225,6 +229,23 @@ export class AdminService {
     return this.http.post<any>(`${this.apiUrl}updateMateriasForCursoInAnioLectivo`, body);
   }
 
+  agregarNota(idMatricula: any, notas: any): Observable<any> {
 
+    let datos = notas['materias'].map(nota => ({
+      materia_id: nota.id,
+      calificacion: nota.nota
+    }))
+
+    datos = {
+      "materias": datos,
+      "matricula_id": idMatricula,
+    }
+
+    return this.http.post<any>(`${this.apiUrl}agregarNota`, datos);
+  }
+
+  obtenerNotas(matriculaId: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}obtenerNotas/${matriculaId}`);
+  }
 
 }

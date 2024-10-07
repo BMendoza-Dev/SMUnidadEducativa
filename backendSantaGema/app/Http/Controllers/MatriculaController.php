@@ -122,4 +122,40 @@ class MatriculaController extends Controller
 
         return response()->json(['message' => 'Registro eliminado correctamente', 'code' => '200']);
     }
+
+
+    public function getMatriculasByAnioAndCursoParaMaterias(Request $request)
+    {
+        $anio_lectivo_id = $request->input('anio_lectivo_id');
+        $curso_id = $request->input('curso_id');
+
+        if ($anio_lectivo_id == 0 && $curso_id == 0) {
+            $matriculas = Matricula::with([
+                'estudiante.usuario'
+            ])->get();
+        } else if ($anio_lectivo_id != 0 && $curso_id == 0) {
+            $matriculas = Matricula::with([
+                'estudiante.usuario'
+            ])->where('anio_lectivo_id', $anio_lectivo_id)
+                ->get();
+        } else if ($anio_lectivo_id == 0 && $curso_id != 0) {
+            $matriculas = Matricula::with([
+                'estudiante.usuario'
+            ])->where('curso_id', $curso_id)
+                ->get();
+        } else {
+            $matriculas = Matricula::with([
+                'estudiante.usuario'
+            ])
+                ->where('anio_lectivo_id', $anio_lectivo_id)
+                ->where('curso_id', $curso_id)
+                ->get();
+        }
+
+        if ($matriculas->isEmpty()) {
+            return response()->json(['message' => 'No se encontraron matrículas', 'code' => '404']);
+        }
+
+        return response()->json(['message' => $matriculas, 'code' => '200']);
+    }
 }

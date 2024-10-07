@@ -5,17 +5,19 @@ import { CursosComponent } from './cursos/cursos.component';
 import { ALectivoComponent } from './alectivo/alectivo.component';
 import { MateriasComponent } from './materias/materias.component';
 import { GestionAlectivosComponent } from './gestion-alectivos/gestion-alectivos.component';
+import { GestionNotasComponent } from './notas/gestion-notas/gestion-notas.component';
 
 const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forChild([
-    { path: 'Matriculas', data: { breadcrumb: 'Button' }, loadChildren: () => import('./matriculas/matriculas.module').then(m => m.MatriculasModule)},
-    { path: 'ALectivo', data: { breadcrumb: 'Button' }, component:ALectivoComponent},
-    { path: 'Materias', data: { breadcrumb: 'Button' }, component: MateriasComponent},
-    { path: 'Cursos', data: { breadcrumb: 'Button' }, component:CursosComponent},
-    { path: 'Usuarios', data: { breadcrumb: 'Button' }, component:UsuariosComponent},
-    {path: 'GestionALectivos', data: { breadcrumb: 'Button' }, component:GestionAlectivosComponent}
+    { path: 'Matriculas', data: { breadcrumb: 'Button' }, loadChildren: () => import('./matriculas/matriculas.module').then(m => m.MatriculasModule) },
+    { path: 'ALectivo', data: { breadcrumb: 'Button' }, component: ALectivoComponent },
+    { path: 'Materias', data: { breadcrumb: 'Button' }, component: MateriasComponent },
+    { path: 'Cursos', data: { breadcrumb: 'Button' }, component: CursosComponent },
+    { path: 'Usuarios', data: { breadcrumb: 'Button' }, component: UsuariosComponent },
+    { path: 'GestionALectivos', data: { breadcrumb: 'Button' }, component: GestionAlectivosComponent },
+    { path: 'GestionNotas', data: { breadcrumb: 'Button' }, loadChildren: () => import('./notas/notas.module').then(m => m.NotasModule) },
   ])],
   exports: [RouterModule]
 })

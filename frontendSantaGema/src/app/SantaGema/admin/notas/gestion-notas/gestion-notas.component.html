@@ -1,0 +1,108 @@
+<div class="col-12">
+    <div class="card">
+        <h5>Registra Notas</h5>
+        <div class="p-fluid p-formgrid grid align-items-center">
+            <div class="field col-12 md:col-5">
+                <label htmlFor="firstname2">Año lectivo</label>
+                <p-autoComplete required="" [(ngModel)]="selectedAlectivo" [dropdown]="true"
+                    [suggestions]="filteredAnioLectivos" (onSelect)="cargarCursos(); selectedCurso = []"
+                    (completeMethod)="filterALectivo($event)" field="nombre"></p-autoComplete>
+            </div>
+            <div class="field col-12 md:col-5">
+                <label htmlFor="firstname2">Curso</label>
+                <p-autoComplete required [(ngModel)]="selectedCurso" [dropdown]="true" [suggestions]="filteredCursos"
+                    (completeMethod)="filterCurso($event)" field="nombre"></p-autoComplete>
+            </div>
+            <div class="field col-12 md:col-2" style="margin-bottom: -2px;">
+                <p-button [disabled]="selectedCurso.length == []" (click)="cargarMatritulas()"
+                    label="Filtrar"></p-button>
+            </div>
+        </div>
+        <p-table #dt [value]="matriculas" [columns]="cols" responsiveLayout="scroll" [rows]="rowsInit"
+            [paginator]="true" [globalFilterFields]="globalFilterFields" [rowsPerPageOptions]="rowsPerPageOptions"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowHover]="true"
+            dataKey="id">
+
+            <!-- Caption -->
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5 class="m-0">{{anioCursoText}}</h5>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="w-full sm:w-auto" />
+                    </span>
+                </div>
+            </ng-template>
+
+            <!-- Header -->
+            <ng-template pTemplate="header">
+                <tr>
+                    <th *ngFor="let item of cols" class="text-center" [hidden]="item.type === 'hidden'"
+                        [pSortableColumn]="item.field" [ngStyle]="{'max-width': item.maxWidth || 'auto'}">
+                        {{item.header}}
+                        <p-sortIcon [field]="item.field"></p-sortIcon>
+                    </th>
+                    <th  class="text-center">
+                        Agregar notas
+                    </th>
+                </tr>
+            </ng-template>
+
+            <!-- Body -->
+            <ng-template pTemplate="body" let-matricula>
+                <tr>
+                    <td *ngFor="let col of cols" style="text-align: center;">
+                        <!-- Text Type -->
+                        <span *ngIf="col.type === 'text'">{{ matricula | transformarDatos: col.field
+                            }}</span>
+                    </td>
+
+                    <!-- Opciones -->
+                    <td>
+                        <div class="flex justify-content-center">
+                            <button *ngIf="!editing" pButton pRipple icon="pi pi-calculator"
+                                class="p-button-rounded p-button-secondary mr-2" (click)="modificarNotas(matricula)"
+                                pTooltip="Agregar Notas" tooltipPosition="top">
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <p-dialog [(visible)]="agregarNotas" [style]="{ width: '550px' }" header="Notas de Materias" [modal]="true"
+        styleClass="p-fluid" (onHide)="cerrarDialog()">
+        <form [formGroup]="notasForm" (ngSubmit)="guardar()">
+            <div formArrayName="materias" class="grid">
+                <div *ngFor="let materia of materiasFormArray.controls; let i = index" [formGroupName]="i" class="field col-6">
+                    <label>{{materia.get('nombre').value}}</label>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon">#</span>
+                        <input type="text" pInputText formControlName="nota" placeholder="Ingresa nota" />
+                    </div>
+                    <div *ngIf="materia.get('nota').invalid && materia.get('nota').touched" class="p-error">
+                        La nota es requerida y debe ser un número de hasta 2 dígitos y 2 decimales.
+                    </div>
+                </div>
+            </div>
+        </form>
+        
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                (click)="cerrarDialog()"></button>
+            <button pButton pRipple
+                label="Actualizar" icon="pi pi-check"
+                class="p-button-text"
+                (click)="guardar()"></button>
+        </ng-template>
+    </p-dialog>
+</div>
+
+
+<p-toast></p-toast>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#08b549" type="ball-fussion" [fullScreen]="true">
+    <p style="color: #08b549"> Cargando... </p>
+</ngx-spinner>

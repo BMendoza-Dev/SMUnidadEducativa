@@ -40,7 +40,7 @@
       </div>
       <div class="field col-12 md:col-3">
         <label htmlFor="state">Fecha de nacimiento</label>
-        <p-calendar dateFormat="dd/mm/yy" placeholder="dd/mm/YY" [showIcon]="true" inputId="icon"
+        <p-calendar dateFormat="yy-mm-dd" placeholder="yy-mm-dd" [showIcon]="true" inputId="icon"
           [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !fecha_nacimiento}"
           [(ngModel)]="fecha_nacimiento"></p-calendar>
       </div>

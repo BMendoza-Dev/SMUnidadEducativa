@@ -36,5 +36,10 @@ class Matricula extends Model
     {
         return $this->belongsTo(Curso::class, 'curso_id');
     }
+
+    public function notas()
+    {
+        return $this->hasMany(Nota::class, 'matricula_id');
+    }
 }
 
