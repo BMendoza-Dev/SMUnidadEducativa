@@ -6,12 +6,12 @@
     <div class="p-fluid p-formgrid grid">
       <div class="col-12 md:col-6">
         <div class="p-inputgroup">
+          <button type="button" pButton label="Nuevo" icon="pi pi-sliders-h"
+          (click)="generarId()"></button>
           <input pattern="\d{0,10}" maxlength="10" [(ngModel)]="cedula" (input)="ingresoCedula($event)" pInputText
             placeholder="Cédula">
-          <!-- <button type="button" (click)="consultar()" pButton pRipple label="Cunsultar" [disabled]="btnConsultar"></button> -->
-          <p-button label="Consultar" icon="pi pi-search" [loading]="loading" (onClick)="consultar()"
-            [disabled]="btnConsultar"></p-button>
-
+          <button type="button" pButton label="Consultar" icon="pi pi-search" [disabled]="btnConsultar"
+            (click)="consultar()"></button>
         </div>
       </div>
     </div>
@@ -218,3 +218,7 @@
     </p-dialog>
   </div>
 </div>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#08b549" type="ball-fussion" [fullScreen]="true">
+  <p style="color: #08b549"> Cargando... </p>
+</ngx-spinner>

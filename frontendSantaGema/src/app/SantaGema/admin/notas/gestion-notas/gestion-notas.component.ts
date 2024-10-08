@@ -27,7 +27,7 @@ export class GestionNotasComponent implements OnInit {
   cols: any[] = [];
   rowsInit = appConfig.rowsInit;
   globalFilterFields: any[] = [];
-  rowsPerPageOptions = appConfig.rowsPerPageOptions;
+  rowsPerPageOptions = appConfig.rowsPerPageOptions; 
   agregarNotas: boolean = false;
   notasForm: FormGroup;
   idMatricula = 0;
@@ -42,12 +42,18 @@ export class GestionNotasComponent implements OnInit {
       { field: 'estudiante.usuario.nombres', header: 'Nombres', type: 'text', maxWidth: '30%' },
       { field: 'promedio', header: 'Promedio Final', type: 'text', maxWidth: '10%' }
     ];
-
+    this.globalFilterFields = this.generateGlobalFilterFields();
     this.notasForm = this.fb.group({
       materias: this.fb.array([]) // FormArray para manejar las materias de forma dinámica
     });
 
     this.cargarAlectivos();
+  }
+
+  generateGlobalFilterFields(): string[] {
+    return this.cols
+      .filter(col => col.type === 'text')
+      .map(col => col.field);
   }
 
   agregarMaterias(notas: any[] = []) {

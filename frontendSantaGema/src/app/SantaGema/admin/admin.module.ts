@@ -35,6 +35,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { MateriasComponent } from './materias/materias.component';
 import { GestionAlectivosComponent } from './gestion-alectivos/gestion-alectivos.component';
 import { TabViewModule } from 'primeng/tabview';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [UsuariosComponent, CursosComponent,ALectivoComponent, MateriasComponent, GestionAlectivosComponent],
@@ -70,7 +71,8 @@ import { TabViewModule } from 'primeng/tabview';
 		FileUploadModule,
     RadioButtonModule,
     FormsModule,
-    TabViewModule
+    TabViewModule,
+    NgxSpinnerModule
   ]
 })
 export class AdminModule { }

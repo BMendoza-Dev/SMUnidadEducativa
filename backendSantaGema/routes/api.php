@@ -48,6 +48,7 @@ Route::post('registrarUsuario', [UsuarioController::class,'registrarUsuario']);
 Route::get('getListUsuario', [UsuarioController::class,'getListUsuario']);
 Route::post('updateUsuario', [UsuarioController::class,'updateUsuario']);
 Route::post('deleteUsuario', [UsuarioController::class,'deleteUsuario']);
+Route::get('generarDNI', [UsuarioController::class,'generarDNI']);
 
 Route::get('getUsuarioMatricula/{cedula}', [RepresentanteController::class,'getUsuarioMatricula']);
 Route::get('getRepresentante/{id}', [RepresentanteController::class,'getRepresentante']);

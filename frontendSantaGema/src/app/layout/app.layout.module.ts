@@ -20,6 +20,9 @@ import { AppLayoutComponent } from "./app.layout.component";
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { TableModule } from 'primeng/table';
+import { SharedPipesModule } from '../SantaGema/pipes/shared-pipes.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
     declarations: [
@@ -45,7 +48,10 @@ import { ToastModule } from 'primeng/toast';
         AppConfigModule,
         DialogModule,
         ButtonModule,
-        ToastModule
+        ToastModule,
+        TableModule,
+        SharedPipesModule,
+        NgxSpinnerModule
     ],
     exports: [AppLayoutComponent]
 })

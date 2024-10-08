@@ -248,4 +248,9 @@ export class AdminService {
     return this.http.get<any[]>(`${this.apiUrl}obtenerNotas/${matriculaId}`);
   }
 
+  generarDNI():Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}generarDNI`);
+
+  }
+
 }

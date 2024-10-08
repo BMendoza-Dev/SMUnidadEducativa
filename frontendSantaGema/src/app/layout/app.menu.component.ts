@@ -18,28 +18,28 @@ export class AppMenuComponent implements OnInit {
                 label: 'Administrador',
                 items: [
                     {
-                        label: 'Administración', icon: 'pi pi-fw pi-file-edit',
+                        label: 'Administración', icon: 'pi pi-fw pi-cog',
                         items: [
                             {
-                                label: 'Materias', icon: 'pi pi-fw pi-id-card', routerLink: ['/admin/Materias'],
+                                label: 'Materias', icon: 'pi pi-fw pi-book', routerLink: ['/admin/Materias'],
                             },
                             {
-                                label: 'Cursos', icon: 'pi pi-fw pi-list', routerLink: ['/admin/Cursos'],
+                                label: 'Cursos', icon: 'pi pi-fw pi-calendar', routerLink: ['/admin/Cursos'],
                             },
                             {
-                                label: 'Año Lectivo', icon: 'pi pi-fw pi-sitemap', routerLink: ['/admin/ALectivo'],
+                                label: 'Año Lectivo', icon: 'pi pi-fw pi-calendar-plus', routerLink: ['/admin/ALectivo'],
                             },
                             {
-                                label: 'Gestión Años Lectivos', icon: 'pi pi-fw pi-folder', routerLink: ['/admin/GestionALectivos'],
+                                label: 'Gestión Años Lectivos', icon: 'pi pi-fw pi-flag', routerLink: ['/admin/GestionALectivos'],
                             }
                         ]
                     },
-                    { label: 'Gestión Usuarios', icon: 'pi pi-fw pi-user-plus', routerLink: ['/admin/Usuarios'] },
+                    { label: 'Gestión Usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/admin/Usuarios'] },
                     {
-                        label: 'Gestión Matrículas', icon: 'pi pi-fw pi-file-edit',
+                        label: 'Gestión Matrículas', icon: 'pi pi-fw pi-pencil',
                         items: [
                             {
-                                label: 'Registro Matrículas', icon: 'pi pi-fw pi-id-card', routerLink: ['/admin/Matriculas/crear-matricula'],
+                                label: 'Registro Matrículas', icon: 'pi pi-fw pi-plus', routerLink: ['/admin/Matriculas/crear-matricula'],
                             },
                             {
                                 label: 'Lista Matrículas', icon: 'pi pi-fw pi-list', routerLink: ['/admin/Matriculas/lista-matricula'],
@@ -47,10 +47,10 @@ export class AppMenuComponent implements OnInit {
                         ]
                     },
                     {
-                        label: 'Gestión Notas', icon: 'pi pi-fw pi-file-edit',
+                        label: 'Gestión Notas', icon: 'pi pi-fw pi-star',
                         items: [
                             {
-                                label: 'Registro de notas', icon: 'pi pi-fw pi-id-card', routerLink: ['/admin/GestionNotas/registrar-notas'],
+                                label: 'Registro de notas', icon: 'pi pi-fw pi-check', routerLink: ['/admin/GestionNotas/registrar-notas'],
                             }
                         ]
                     }

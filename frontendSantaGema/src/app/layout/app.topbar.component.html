@@ -16,11 +16,20 @@
 
     <div #topbarmenu class="layout-topbar-menu"
         [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
+        <!-- Botón para consultar -->
         <button (click)="consultarUsuarios = true; nombre = ''" class="p-link layout-topbar-button">
-            <i class="pi pi-id-card"></i>
-            <span>Profile</span>
+            <i class="pi pi-search"></i> <!-- Icono de búsqueda para consultar -->
+            <span>Consultar</span>
         </button>
+
+        <!-- Botón para gestionar usuarios -->
+        <button (click)="consultarDB()" class="p-link layout-topbar-button">
+            <i class="pi pi-users"></i> <!-- Icono de usuarios -->
+            <span>Usuarios</span>
+        </button>
+
     </div>
+
 </div>
 
 <p-dialog [(visible)]="consultarUsuarios" [style]="{width: '450px'}" header="Consultar Persona" [modal]="true"
@@ -53,7 +62,7 @@
         <div class="field">
             <button pButton pRipple label="Limpiar datos" class="p-button-text" (click)="limpiarDatos()"></button>
         </div>
-        
+
     </ng-template>
 
     <ng-template pTemplate="footer">
@@ -62,4 +71,59 @@
     </ng-template>
 </p-dialog>
 
-<p-toast key="tst"></p-toast>
+<p-dialog [(visible)]="consultarUsuariosDB" [style]="{width: '750px'}" header="Consultar Persona" [modal]="true"
+    class="p-fluid">
+    <ng-template pTemplate="content">
+        <p-table #dt [value]="usuariosDB" [columns]="cols" responsiveLayout="scroll" [rows]="rowsInit"
+            [paginator]="true" [globalFilterFields]="globalFilterFields" [rowsPerPageOptions]="rowsPerPageOptions"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowHover]="true"
+            dataKey="id">
+
+            <!-- Caption -->
+            <ng-template pTemplate="caption">
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5 class="m-0">{{anioCursoText}}</h5>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                            class="w-full sm:w-auto" />
+                    </span>
+                </div>
+            </ng-template>
+
+            <!-- Header -->
+            <ng-template pTemplate="header">
+                <tr>
+                    <th *ngFor="let item of cols" class="text-center" [hidden]="item.type === 'hidden'"
+                        [pSortableColumn]="item.field" [ngStyle]="{'max-width': item.maxWidth || 'auto'}">
+                        {{item.header}}
+                        <p-sortIcon [field]="item.field"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+
+            <!-- Body -->
+            <ng-template pTemplate="body" let-usuarioDB>
+                <tr>
+                    <td *ngFor="let col of cols" style="text-align: center;">
+                        <!-- Text Type -->
+                        <span *ngIf="col.type === 'text'">{{ usuarioDB | transformarDatos: col.field
+                            }}</span>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+            (click)="consultarUsuariosDB = false;"></button>
+    </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#08b549" type="ball-fussion" [fullScreen]="true">
+    <p style="color: #08b549"> Cargando... </p>
+</ngx-spinner>
