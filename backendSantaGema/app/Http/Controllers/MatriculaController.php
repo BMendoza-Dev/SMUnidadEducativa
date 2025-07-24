@@ -12,7 +12,6 @@ class MatriculaController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'matriculaNum' => 'required',
             'estudiante_id' => 'required|exists:estudiantes,id',
             'representante_id' => 'required|exists:representantes,id',
             'anio_lectivo_id' => 'required|exists:anio_lectivos,id',
@@ -20,7 +19,7 @@ class MatriculaController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => 'No existe datos relacionados', 'code' => '401']);
+            return response()->json(['message' => 'Exsiten datos vacios', 'code' => '401']);
         }
 
         $exists = Matricula::where('estudiante_id', $request->estudiante_id)

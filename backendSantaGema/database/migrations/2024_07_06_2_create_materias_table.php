@@ -16,6 +16,13 @@ class CreateMateriasTable extends Migration
         Schema::create('materias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+
+            // Tipo de nota: 'cuantitativa' o 'cualitativa' (A, B, C, D)
+            $table->string('tipo_nota')->default('cuantitativa');
+
+            // ¿Se incluye en el promedio final?
+            $table->boolean('incluye_promedio')->default(true);
+
             $table->timestamps();
         });
     }

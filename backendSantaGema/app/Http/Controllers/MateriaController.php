@@ -17,34 +17,37 @@ class MateriaController extends Controller
             'nombre' => [
                 'required',
                 'max:255',
-                // Validar que el campo sea único, insensible a mayúsculas/minúsculas
                 Rule::unique('materias')->where(function ($query) use ($request) {
                     return $query->whereRaw('LOWER(nombre) = ?', [strtolower($request->nombre)]);
                 }),
             ],
+            'tipo_nota' => ['required', Rule::in(['cuantitativa', 'cualitativa'])],
+            'incluye_promedio' => ['required', 'boolean'],
         ]);
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors(), 'code' => '422']);
         }
+
         $materia = Materia::create([
-            'nombre' => $request->nombre
+            'nombre' => $request->nombre,
+            'tipo_nota' => $request->tipo_nota,
+            'incluye_promedio' => $request->incluye_promedio,
         ]);
-        // Obtener el ID del registro creado
-        $id = $materia->id;
-        return response()->json(['message' => 'registro correcto', 'id' => $id, 'code' => '200']);
+
+        return response()->json(['message' => 'registro correcto', 'id' => $materia->id, 'code' => '200']);
     }
 
     public function getListMateria()
     {
 
-        $materias = Materia::all();
+        $materias = Materia::orderBy('id', 'desc')->get();
 
         return response()->json(['message' => $materias, 'code' => '200']);
     }
 
     public function updateMateria(Request $request, $id)
     {
-        // Validar los datos recibidos
         $validator = Validator::make($request->all(), [
             'nombre' => [
                 'required',
@@ -53,26 +56,28 @@ class MateriaController extends Controller
                     return $query->whereRaw('LOWER(nombre) = ?', [strtolower($request->nombre)]);
                 }),
             ],
+            'tipo_nota' => ['required', Rule::in(['cuantitativa', 'cualitativa'])],
+            'incluye_promedio' => ['required'],
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors(), 'code' => '422']);
         }
 
-        // Buscar la materia por ID
         $materia = Materia::find($id);
 
-        // Verificar si la materia existe
         if (!$materia) {
             return response()->json(['message' => 'Materia no encontrada', 'code' => '404']);
         }
 
-        // Actualizar los datos de la materia
         $materia->nombre = $request->nombre;
+        $materia->tipo_nota = $request->tipo_nota;
+        $materia->incluye_promedio = $request->incluye_promedio;
         $materia->save();
 
         return response()->json(['message' => 'Registro actualizado correctamente', 'id' => $materia->id, 'code' => '200']);
     }
+
 
     public function deleteMateria(Request $request)
     {

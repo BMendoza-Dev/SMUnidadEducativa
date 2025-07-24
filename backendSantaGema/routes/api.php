@@ -73,3 +73,11 @@ Route::get('getMateriasPorCursoYAnioLectivo/{anioLectivoId}/{cursoId}', [AnioCur
 
 Route::post('agregarNota',[NotaController::class, 'agregarNota']);
 Route::get('obtenerNotas/{idMatricula}',[NotaController::class, 'obtenerNotas']);
+Route::post('reportes/certificado-promocion', [NotaController::class, 'generarCertificadoPromocion']);
+
+Route::post('consultarPorCedula',[UsuarioController::class, 'consultarPorCedula'] );
+Route::post('consultarPorNombres',[UsuarioController::class, 'consultarPorNombres'] );
+
+
+Route::post('getListStudentsByALectivo', [EstudianteController::class, 'getListStudentsByALectivo']);
+Route::get('certificados/notas-pdf/{matricula_id}', [EstudianteController::class, 'generarCertificadoNotasPdf']);

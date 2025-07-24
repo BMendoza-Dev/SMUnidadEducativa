@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class UsuarioController extends Controller
 {
@@ -65,7 +66,7 @@ class UsuarioController extends Controller
 
     public function getListUsuario()
     {
-        $usuarios = Usuario::select('id', 'cedula', 'nombres', 'apellidos', 'nacionalidad', 'genero', 'fecha_nacimiento')->get();
+        $usuarios = Usuario::select('id', 'cedula', 'nombres', 'apellidos', 'nacionalidad', 'genero', 'fecha_nacimiento')->orderBy('id', 'desc')->get();
         if ($usuarios->isEmpty()) {
             return response()->json(['message' => 'No existen datos agregados', 'code' => '404']);
         }
@@ -140,4 +141,64 @@ class UsuarioController extends Controller
         // Retornar el DNI generado
         return response()->json(['message' => $dni, 'code' => '200']);
     }
+
+    public function consultarPorCedula(Request $request)
+    {
+        $cedula = trim($request->input('value')); // Elimina espacios si los hay
+
+        if (!$cedula) {
+            return response()->json([
+                'message' => 'Cédula no proporcionada',
+                'code' => 400
+            ]);
+        }
+
+        $registro = DB::table('padron_importadov1')
+            ->select('cedula', 'nombre', 'fecha_nacimiento')
+            ->where('cedula', '=', $cedula)
+            ->first();
+
+        if ($registro) {
+            return response()->json([
+                'data' => $registro,
+                'code' => 200
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Cédula no encontrada',
+            'code' => 404
+        ]);
+    }
+
+    public function consultarPorNombres(Request $request)
+    {
+        $nombre = trim($request->input('value'));
+
+        if (!$nombre) {
+            return response()->json([
+                'message' => 'Nombre no proporcionado',
+                'code' => 400
+            ]);
+        }
+
+        $resultados = DB::table('padron_importadov1')
+            ->select('cedula', 'nombre', 'fecha_nacimiento')
+            ->where('nombre', 'LIKE', '%' . $nombre . '%')
+            ->limit(50) // Limita la cantidad de resultados para evitar sobrecargar
+            ->get();
+
+        if ($resultados->isEmpty()) {
+            return response()->json([
+                'message' => 'No se encontraron coincidencias',
+                'code' => 404
+            ]);
+        }
+
+        return response()->json([
+            'data' => $resultados,
+            'code' => 200
+        ]);
+    }
+
 }
