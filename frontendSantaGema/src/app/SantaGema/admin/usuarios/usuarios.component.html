@@ -6,8 +6,7 @@
     <div class="p-fluid p-formgrid grid">
       <div class="col-12 md:col-6">
         <div class="p-inputgroup">
-          <button type="button" pButton label="Nuevo" icon="pi pi-sliders-h"
-          (click)="generarId()"></button>
+          <button type="button" pButton label="Nuevo" icon="pi pi-sliders-h" (click)="generarId()"></button>
           <input pattern="\d{0,10}" maxlength="10" [(ngModel)]="cedula" (input)="ingresoCedula($event)" pInputText
             placeholder="Cédula">
           <button type="button" pButton label="Consultar" icon="pi pi-search" [disabled]="btnConsultar"
@@ -17,14 +16,14 @@
     </div>
     <div *ngIf="formularioAct" class="p-fluid p-formgrid grid" style="margin-top: 15px;">
       <div class="field col-12 md:col-4">
-        <label htmlFor="firstname">Nombres</label>
-        <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !nombres}" [(ngModel)]="nombres" pInputText
-          id="nombres" type="text" placeholder="Nombres..." />
-      </div>
-      <div class="field col-12 md:col-4">
         <label htmlFor="lastname">Apellidos</label>
         <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !apellidos}" [(ngModel)]="apellidos"
           pInputText id="apellidos" type="text" placeholder="Apellidos..." />
+      </div>
+      <div class="field col-12 md:col-4">
+        <label htmlFor="firstname">Nombres</label>
+        <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !nombres}" [(ngModel)]="nombres" pInputText
+          id="nombres" type="text" placeholder="Nombres..." />
       </div>
       <div class="field col-12 md:col-3">
         <label htmlFor="state">Nacionalidad</label>
@@ -40,7 +39,7 @@
       </div>
       <div class="field col-12 md:col-3">
         <label htmlFor="state">Fecha de nacimiento</label>
-        <p-calendar dateFormat="yy-mm-dd" placeholder="yy-mm-dd" [showIcon]="true" inputId="icon"
+        <p-calendar dateFormat="mm/dd/yy" placeholder="mm/dd/yy" [showIcon]="true" inputId="icon"
           [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !fecha_nacimiento}"
           [(ngModel)]="fecha_nacimiento"></p-calendar>
       </div>

@@ -44,7 +44,7 @@
                         {{item.header}}
                         <p-sortIcon [field]="item.field"></p-sortIcon>
                     </th>
-                    <th  class="text-center">
+                    <th class="text-center">
                         Agregar notas
                     </th>
                 </tr>
@@ -76,7 +76,8 @@
         styleClass="p-fluid" (onHide)="cerrarDialog()">
         <form [formGroup]="notasForm" (ngSubmit)="guardar()">
             <div formArrayName="materias" class="grid">
-                <div *ngFor="let materia of materiasFormArray.controls; let i = index" [formGroupName]="i" class="field col-6">
+                <div *ngFor="let materia of materiasFormArray.controls; let i = index" [formGroupName]="i"
+                    class="field col-6">
                     <label>{{materia.get('nombre').value}}</label>
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon">#</span>
@@ -88,13 +89,11 @@
                 </div>
             </div>
         </form>
-        
+
         <ng-template pTemplate="footer">
             <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
                 (click)="cerrarDialog()"></button>
-            <button pButton pRipple
-                label="Actualizar" icon="pi pi-check"
-                class="p-button-text"
+            <button pButton pRipple label="Actualizar" icon="pi pi-check" class="p-button-text"
                 (click)="guardar()"></button>
         </ng-template>
     </p-dialog>

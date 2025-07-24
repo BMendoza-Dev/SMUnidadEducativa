@@ -3,17 +3,50 @@
         <h2>GESTIÓN DE MATERIAS</h2>
         <h5>REGISTRO</h5>
         <p-toast key="tst"></p-toast>
-        <div class="p-fluid p-formgrid grid align-items-center">
-            <div class="field col-12 md:col-6">
-                <label htmlFor="aLectivo">Nombre del Materia:</label>
-                <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !nomMateria}" [(ngModel)]="nomMateria" pInputText id="aLectivo" type="text" placeholder="Matematicas"/>
+
+        <div class="flex flex-column md:flex-row md:gap-4 gap-2">
+            <!-- Nombre -->
+            <div class="p-fluid">
+                <div class="field basis-1/4">
+                    <label htmlFor="aLectivo">Nombre del Materia:</label>
+                    <input required [ngClass]="{'ng-invalid ng-dirty' : validatedForm && !nomMateria}"
+                        [(ngModel)]="nomMateria" pInputText id="aLectivo" type="text" placeholder="Matemáticas" />
+                </div>
             </div>
-            <div class="field col-12 md:col-2" style="margin-bottom: -2px;">
-                <button pButton pRipple type="button" label="Guardar" (click)="saveMateria()" class="p-button-rounded p-button-success" style="margin-top: 10px;"></button>
+
+            <!-- Tipo de Nota -->
+            <div class="p-fluid">
+                <div class="field basis-1/4">
+                    <label for="tipoNota">Tipo de Nota:</label>
+                    <p-dropdown [options]="tiposNota" [(ngModel)]="tipoNota" placeholder="Seleccione" id="tipoNota"
+                        optionLabel="label" optionValue="value"
+                        [ngClass]="{ 'ng-invalid ng-dirty': validatedForm && !tipoNota }">
+                    </p-dropdown>
+                </div>
             </div>
-        </div>        
+
+            <!-- Incluir en promedio -->
+            <div class="p-fluid">
+                <div class="field basis-1/4">
+                    <label for="incluyePromedio">¿Incluir en promedio final?</label>
+                    <p-dropdown [options]="opcionesPromedio" [(ngModel)]="incluyePromedio" placeholder="Seleccione"
+                        id="incluyePromedio" optionLabel="label" optionValue="value"
+                        [ngClass]="{ 'ng-invalid ng-dirty': validatedForm && incluyePromedio === null }">
+                    </p-dropdown>
+                </div>
+            </div>
+
+            <!-- Botón Guardar -->
+            <div class="p-fluid">
+                <div class="field basis-1/4 flex align-items-end">
+                    <button pButton pRipple type="button" label="Guardar" (click)="saveMateria()"
+                        class="p-button-rounded p-button-success w-full mt-4"></button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 
 <div class="grid">
     <div class="col-12">
@@ -22,9 +55,12 @@
             <p-toolbar styleClass="mb-4">
                 <ng-template pTemplate="left">
                     <div class="my-2">
-						<button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help mr-2" (click)="dt.exportCSV()"></button>
+                        <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help mr-2"
+                            (click)="dt.exportCSV()"></button>
                         <!-- <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button> -->
-                        <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedMaterias()" [disabled]="!selectedMaterias || !selectedMaterias.length"></button>
+                        <button pButton pRipple label="Eliminar" icon="pi pi-trash" class="p-button-danger"
+                            (click)="deleteSelectedMaterias()"
+                            [disabled]="!selectedMaterias || !selectedMaterias.length"></button>
                     </div>
                 </ng-template>
 
@@ -32,43 +68,54 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="materias" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['nombre']" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [(selection)]="selectedMaterias" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="materias" [columns]="cols" responsiveLayout="scroll" [rows]="rowsInit"
+                [paginator]="true" [globalFilterFields]="globalFilterFields" [rowsPerPageOptions]="rowsPerPageOptions"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros"
+                [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
                         <h5 class="m-0">Lista de Materias</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."  class="w-full sm:w-auto"/>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
                         </span>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        <th style="width: 3rem">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        <th *ngFor="let item of cols" class="text-center" [hidden]="item.type === 'hidden'"
+                            [pSortableColumn]="item.field" [ngStyle]="{'max-width': item.maxWidth || 'auto'}">
+                            {{item.header}}
+                            <p-sortIcon [field]="item.field"></p-sortIcon>
                         </th>
-                        <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
-                        <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-                        <th></th>
+                        <th class="text-center">
+                            Opciones
+                        </th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-materia>
                     <tr>
-                        <td>
-                            <p-tableCheckbox [value]="materia"></p-tableCheckbox>
+                        <td *ngFor="let col of cols" style="text-align: center;">
+                            <!-- Text Type -->
+                            <span *ngIf="col.type === 'text'">{{ materia | transformarDatos: col.field
+                                }}</span>
+                            <span *ngIf="col.type === 'badge'">
+                                <p-tag [severity]="materia[col.field] ? 'success' : 'danger'"
+                                    [value]="materia[col.field] ? 'Sí' : 'No'"></p-tag>
+                            </span>
+
                         </td>
-                        <td>
-                            <span class="p-column-title">ID</span>
-                            {{materia.id}}
-                        </td>
-                        <td>
-                            <span class="p-column-title">Nombre</span>
-                            {{materia.nombre}}
-                        </td>
+
+                        <!-- Opciones -->
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editMateria(materia)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteMateria(materia)"></button>
+                                <button pButton pRipple icon="pi pi-pencil"
+                                    class="p-button-rounded p-button-success mr-2"
+                                    (click)="editMateria(materia)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
+                                    (click)="deleteMateria(materia)"></button>
                             </div>
                         </td>
                     </tr>
@@ -76,18 +123,46 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="materiaDialog" [style]="{width: '450px'}" header="Detalles del Materia" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="materiaDialog" [style]="{width: '450px'}" header="Detalles del Materia" [modal]="true"
+            class="p-fluid">
             <ng-template pTemplate="content">
+                <!-- Campo: Nombre -->
                 <div class="field">
                     <label for="nombre">Nombre</label>
-                    <input type="text" pInputText id="nombre" [(ngModel)]="materia.nombre" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !materia.nombre}"/>
+                    <input type="text" pInputText id="nombre" [(ngModel)]="materia.nombre" required autofocus
+                        [ngClass]="{ 'ng-invalid ng-dirty': submitted && !materia.nombre }" />
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !materia.nombre">Nombre es requerido.</small>
+                </div>
+
+                <!-- Campo: Tipo de Nota -->
+                <div class="field">
+                    <label for="tipoNota">Tipo de Nota</label>
+                    <p-dropdown id="tipoNota" [options]="tiposNota" [(ngModel)]="materia.tipo_nota"
+                        placeholder="Seleccione tipo de nota" optionLabel="label" optionValue="value"
+                        [ngClass]="{ 'ng-invalid ng-dirty': submitted && !materia.tipo_nota }">
+                    </p-dropdown>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !materia.tipo_nota">Este campo es
+                        obligatorio.</small>
+                </div>
+
+                <!-- Campo: ¿Se incluye en promedio? -->
+                <div class="field">
+                    <label for="incluyePromedio">¿Incluir en promedio final?</label>
+                    <p-dropdown id="incluyePromedio" [options]="opcionesPromedio" [(ngModel)]="materia.incluye_promedio"
+                        placeholder="Seleccione una opción" optionLabel="label" optionValue="value" appendTo="body"
+                        [ngClass]="{ 'ng-invalid ng-dirty': submitted && materia.incluye_promedio === null }">
+                    </p-dropdown>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && materia.incluye_promedio === null">Este campo
+                        es obligatorio.</small>
                 </div>
             </ng-template>
 
+
             <ng-template pTemplate="footer">
-                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveMateria()"></button>
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
+                    (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text"
+                    (click)="saveMateria()"></button>
             </ng-template>
         </p-dialog>
 
@@ -97,8 +172,10 @@
                 <span *ngIf="materia">Estas seguro que quieres eliminar <b>{{materia.nombre}}</b>?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteMateriaDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDelete()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteMateriaDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                    (click)="confirmDelete()"></button>
             </ng-template>
         </p-dialog>
 
@@ -108,11 +185,11 @@
                 <span>Estas seguro que quieres eliminar los materias?</span>
             </div>
             <ng-template pTemplate="footer">
-                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteCusosDialog = false"></button>
-                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí" (click)="confirmDeleteSelected()"></button>
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No"
+                    (click)="deleteCusosDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Sí"
+                    (click)="confirmDeleteSelected()"></button>
             </ng-template>
         </p-dialog>
     </div>
 </div>
-
-    

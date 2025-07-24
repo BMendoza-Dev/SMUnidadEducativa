@@ -151,7 +151,6 @@ export class UsuariosComponent implements OnInit {
           next: rest => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Año Lectivo actualizado', life: 3000 });
             this.getList();
-
             this.usuarioDialog = false;
             this.usuario = {};
           }, error: e => {
@@ -179,11 +178,8 @@ export class UsuariosComponent implements OnInit {
         this.adminService.registrarUsuario(this.usuario).subscribe({
           next: rest => {
             if (rest.code == "200") {
-              this.usuario.id = rest.id;
-
-              this.usuarios.push(this.usuario);
+              this.getList();
               this.messageService.add({ key: 'tst', severity: 'success', summary: 'Éxito!', detail: 'Se proceso correctamente' });
-              this.usuarios = [...this.usuarios];
               this.usuario = {};
               this.validatedForm = false;
             } else {

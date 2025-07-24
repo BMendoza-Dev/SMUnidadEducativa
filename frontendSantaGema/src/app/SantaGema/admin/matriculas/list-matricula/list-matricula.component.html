@@ -41,7 +41,7 @@
             </p-toolbar>
 
             <p-table #dt [value]="matriculas" [columns]="cols" responsiveLayout="scroll" [rows]="10"
-                [globalFilterFields]="['matriculaNum', 'estudiante.usuario.cedula' ,'nom_apellEstudiante', 'cedulaRepresentante','nom_apellRepresentante']"
+                [globalFilterFields]="['matriculaNum', 'estudiante.usuario.cedula' ,'nom_apellEstudiante', 'representante.usuario.cedula','nom_apellRepresentante']"
                 [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                 [(selection)]="selectedMatriculas" selectionMode="multiple" [rowHover]="true" dataKey="id">
@@ -130,7 +130,7 @@
                         </div>
                         <div class="field col-12 md:col-3">
                             <label htmlFor="firstname2">Numero de matrícula</label>
-                            <input required [(ngModel)]="matriculaNum" pInputText id="numMatricula" type="text"
+                            <input [(ngModel)]="matriculaNum" pInputText id="numMatricula" type="text"
                                 placeholder="Número de matrícula" />
                         </div>
                     </div>
@@ -182,22 +182,19 @@
                             </div>
                             <div class="field col-12 md:col-6">
                                 <label htmlFor="lastname">Dirección</label>
-                                <input required
-                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.direccion}"
+                                <input
                                     [(ngModel)]="representante.direccion" pInputText id="direccion" type="text"
                                     placeholder="Direccion..." />
                             </div>
                             <div class="field col-12 md:col-2">
                                 <label htmlFor="lastname">Telefono</label>
-                                <input required
-                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.telefono}"
+                                <input
                                     [(ngModel)]="representante.telefono" pInputText id="telefono" type="text"
                                     placeholder="Telefono..." />
                             </div>
                             <div class="field col-12 md:col-4">
                                 <label htmlFor="lastname">Correo</label>
-                                <input required
-                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormRepre && !representante.correo}"
+                                <input 
                                     [(ngModel)]="representante.correo" pInputText id="correo" type="text"
                                     placeholder="Correo..." />
                             </div>
@@ -248,22 +245,19 @@
                             </div>
                             <div class="field col-12 md:col-6">
                                 <label htmlFor="lastname">Dirección</label>
-                                <input required
-                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.direccion}"
+                                <input
                                     [(ngModel)]="estudiante.direccion" pInputText id="direccion" type="text"
                                     placeholder="Direccion..." />
                             </div>
                             <div class="field col-12 md:col-2">
                                 <label htmlFor="lastname">Telefono</label>
-                                <input required
-                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.telefono}"
+                                <input 
                                     [(ngModel)]="estudiante.telefono" pInputText id="telefono" type="text"
                                     placeholder="Telefono..." />
                             </div>
                             <div class="field col-12 md:col-4">
                                 <label htmlFor="lastname">Correo</label>
-                                <input required
-                                    [ngClass]="{'ng-invalid ng-dirty' : validatedFormEstu && !estudiante.correo}"
+                                <input 
                                     [(ngModel)]="estudiante.correo" pInputText id="correo" type="text"
                                     placeholder="Correo..." />
                             </div>

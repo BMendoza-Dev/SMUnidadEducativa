@@ -24,8 +24,6 @@ export class CrearMatriculaComponent implements OnInit {
   cursos: Curso[] | undefined;
   cedulaRepre: string = '';
   cedulaEstu: string = '';
-  loadingRepre: boolean = false;
-  loadingEstu: boolean = false;
   btnConsultarRepre: boolean = true;
   btnConsultarEstu: boolean = true;
   formularioRepre: boolean = false;
@@ -65,7 +63,7 @@ export class CrearMatriculaComponent implements OnInit {
         this.spinner.hide();
       },
       error: err => {
-        this.spinner.hide();  
+        this.spinner.hide();
       }
     });
   }
@@ -266,76 +264,70 @@ export class CrearMatriculaComponent implements OnInit {
     this.submittedRepre = true;
     this.validatedFormRepre = true
     this.representante['parentesco'] = this.selectedParentesco.name;
-    if (this.representante['parentesco'] != ('Seleccionar') && this.representante['direccion'] != ('') &&
-      this.representante['telefono'] != ('') && this.representante['correo'] != ('')) {
-      if (this.representante['id'] != (0)) {
-        this.spinner.show();
-        this.adminService.updateRepresentante(this.representante).subscribe({
-          next: rest => {
-            if (rest.code === '200') {
-              this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Representante actualizado correctamente' });
-            }
-            this.spinner.hide();
-          }, error: e => {
-            console.log(e);
-            this.spinner.hide();
-            this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'Error al actualizar el representante' });
+    if (this.representante['id'] != (0)) {
+      this.spinner.show();
+      this.adminService.updateRepresentante(this.representante).subscribe({
+        next: rest => {
+          if (rest.code === '200') {
+            this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Representante actualizado correctamente' });
           }
-        })
-      } else {
-        this.spinner.show();
-        this.adminService.createRepresentante(this.representante).subscribe({
-          next: rest => {
-            if (rest.code === '200') {
-              this.representante['id'] = rest.id;
-              this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Representante creado correctamente' });
-            }
-            this.spinner.hide();
-          }, error: e => {
-            console.log(e);
-            this.spinner.hide();
-            this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'Error al crear el representante' });
+          this.spinner.hide();
+        }, error: e => {
+          console.log(e);
+          this.spinner.hide();
+          this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'Error al actualizar el representante' });
+        }
+      })
+    } else {
+      this.spinner.show();
+      this.adminService.createRepresentante(this.representante).subscribe({
+        next: rest => {
+          if (rest.code === '200') {
+            this.representante['id'] = rest.id;
+            this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Representante creado correctamente' });
           }
-        })
-      }
+          this.spinner.hide();
+        }, error: e => {
+          console.log(e);
+          this.spinner.hide();
+          this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'Error al crear el representante' });
+        }
+      })
     }
-
   }
 
   actualizarEstudiante() {
     this.submittedEstu = true;
     this.validatedFormEstu = true
-    if (this.estudiante['direccion'] != ('') && this.estudiante['telefono'] != ('') && this.estudiante['correo'] != ('')) {
-      if (this.estudiante['id'] != (0)) {
-        this.spinner.show();
-        this.adminService.updateEstudiante(this.estudiante).subscribe({
-          next: rest => {
-            if (rest.code === '200') {
-              this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Estudiante actualizado correctamente' });
-            }
-            this.spinner.hide();
-          }, error: e => {
-            console.log(e);
-            this.spinner.hide();
-            this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'Error al actualizar el estudiante' });
+    if (this.estudiante['id'] != (0)) {
+      this.spinner.show();
+      this.adminService.updateEstudiante(this.estudiante).subscribe({
+        next: rest => {
+          if (rest.code === '200') {
+            this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Estudiante actualizado correctamente' });
           }
-        })
-      } else {
-        this.spinner.show();
-        this.adminService.createEstudiante(this.estudiante).subscribe({
-          next: rest => {
-            if (rest.code === '200') {
-              this.estudiante['id'] = rest.id;
-              this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Representante creado correctamente' });
-            }
-            this.spinner.hide();
-          }, error: e => {
-            console.log(e);
-            this.spinner.hide();
-            this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'Error al crear el representante' });
+          this.spinner.hide();
+        }, error: e => {
+          console.log(e);
+          this.spinner.hide();
+          this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'Error al actualizar el estudiante' });
+        }
+      })
+    } else {
+      this.spinner.show();
+      this.adminService.createEstudiante(this.estudiante).subscribe({
+        next: rest => {
+          if (rest.code === '200') {
+            this.estudiante['id'] = rest.id;
+            this.messageService.add({ severity: 'success', summary: 'Información!', detail: 'Representante creado correctamente' });
           }
-        })
-      }
+          this.spinner.hide();
+        }, error: e => {
+          console.log(e);
+          this.spinner.hide();
+          this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'Error al crear el representante' });
+        }
+      })
     }
   }
 
@@ -347,7 +339,7 @@ export class CrearMatriculaComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'La cedula del representante y estudiante no pueden ser iguales' });
       return;
     }
-    if (this.numMatricula != '' && this.formularioEstu && this.formularioRepre && this.selectedAlectivo.id && this.selectedCurso.id && this.representante.id && this.estudiante.id) {
+    if (this.formularioEstu && this.formularioRepre && this.selectedAlectivo.id && this.selectedCurso.id && this.representante.id && this.estudiante.id) {
       let dato = {
         matriculaNum: this.numMatricula,
         estudiante_id: this.estudiante.id,
@@ -360,7 +352,7 @@ export class CrearMatriculaComponent implements OnInit {
         next: rest => {
           if (rest.code === '200') {
             this.messageService.add({ severity: 'success', summary: 'Correcto!', detail: 'Matricula creada correctamente' });
-          this.limpiarInterface();
+            this.limpiarInterface();
           }
           if (rest.code === '401') {
             this.messageService.add({ severity: 'info', summary: 'Información!', detail: rest.message });
@@ -378,7 +370,7 @@ export class CrearMatriculaComponent implements OnInit {
   }
 
   idAlectivo: any;
-  cursoDisabled:boolean = true;
+  cursoDisabled: boolean = true;
   onSelectALectivo(event: any) {
     this.idAlectivo = event.id;
     this.selectedCurso = [];

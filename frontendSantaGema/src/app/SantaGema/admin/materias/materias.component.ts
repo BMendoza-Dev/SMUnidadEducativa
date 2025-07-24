@@ -3,6 +3,7 @@ import { AdminService } from '../../service/admin.service';
 import { MessageService } from 'primeng/api';
 import { Materia } from '../../service/interface';
 import { Table } from 'primeng/table';
+import { appConfig } from 'src/app/config';
 
 @Component({
   selector: 'app-materias',
@@ -15,25 +16,37 @@ export class MateriasComponent {
   constructor(private adminService: AdminService, private messageService: MessageService) { }
 
   ngOnInit(): void {
+    this.cols = [
+      { field: 'id', header: 'ID', type: 'text', maxWidth: '10%' },
+      { field: 'nombre', header: 'Nombre', type: 'text', maxWidth: '30%' },
+      { field: 'tipo_nota', header: 'Tipo de Nota', type: 'text', maxWidth: '10%' },
+      { field: 'incluye_promedio', header: 'Incluye en promedio', type: 'badge', maxWidth: '10%' },
+    ];
+    this.globalFilterFields = this.generateGlobalFilterFields();
+    this.cargarMaterias();
+  }
+
+  generateGlobalFilterFields(): string[] {
+    return this.cols
+      .filter(col => col.type === 'text')
+      .map(col => col.field);
+  }
+
+  cargarMaterias() {
     this.adminService.getListMateria().subscribe({
       next: data => {
         this.materias = data['message'];
-
-        this.cols = [
-          { field: 'id', header: 'ID' },
-          { field: 'nombre', header: 'Nombre' },
-        ];
       }
     })
   }
-
-  //CRUD
 
   nomMateria: any = "";
 
   clearVariable() {
     this.nomMateria = "";
     this.validatedForm = false;
+    this.tipoNota = "";
+    this.incluyePromedio = null;
   }
 
   validatedForm: boolean = false;
@@ -54,7 +67,24 @@ export class MateriasComponent {
 
   cols: any[] = [];
 
-  rowsPerPageOptions = [5, 10, 20];
+  rowsInit = appConfig.rowsInit;
+  rowsPerPageOptions = appConfig.rowsPerPageOptions;
+  globalFilterFields: any[] = [];
+
+  tipoNota: string = "";
+  incluyePromedio: boolean | null = null;
+
+  tiposNota = [
+    { label: 'Cuantitativa', value: 'cuantitativa' },
+    { label: 'Cualitativa', value: 'cualitativa' }
+  ];
+
+  opcionesPromedio = [
+    { label: 'Sí', value: 1 },
+    { label: 'No', value: 0 }
+  ];
+
+
 
   openNew() {
     this.materia = {};
@@ -128,14 +158,13 @@ export class MateriasComponent {
     this.submitted = true;
     this.validatedForm = true
     if (this.materia.id) {
-      if (this.materia.nombre != "") {
-        this.materias[this.findIndexById(this.materia.id)] = this.materia;
+      if (this.materia.nombre) {
         this.adminService.updateMateria(this.materia).subscribe({
           next: rest => {
             this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Materia actualizado', life: 3000 });
-            this.materias = [...this.materias];
             this.materiaDialog = false;
             this.materia = {};
+            this.cargarMaterias();
           }, error: e => {
             this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información' });
             setTimeout(() => {
@@ -148,11 +177,12 @@ export class MateriasComponent {
         this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Alerta!', detail: 'Existe campos vacios' });
       }
     } else {
-      this.materia = {
-        nombre: this.nomMateria,
-      }
-
-      if (this.materia.nombre != "") {
+      if (this.nomMateria && this.tipoNota && this.incluyePromedio !== null) {
+        this.materia = {
+          nombre: this.nomMateria,
+          tipo_nota: this.tipoNota,
+          incluye_promedio: this.incluyePromedio
+        };
         this.adminService.registerMateria(this.materia).subscribe({
           next: rest => {
             if (rest.code == "200") {
@@ -170,7 +200,6 @@ export class MateriasComponent {
             this.clearVariable();
           }, error: e => {
             setTimeout(() => {
-              window.location.reload();
               console.log(e);
             }, 2000);
             this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'Error al procesar la información' });

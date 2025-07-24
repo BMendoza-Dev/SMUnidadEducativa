@@ -6,6 +6,7 @@ import { ALectivoComponent } from './alectivo/alectivo.component';
 import { MateriasComponent } from './materias/materias.component';
 import { GestionAlectivosComponent } from './gestion-alectivos/gestion-alectivos.component';
 import { GestionNotasComponent } from './notas/gestion-notas/gestion-notas.component';
+import { ReportesComponent } from './reportes/reportes.component';
 
 const routes: Routes = [];
 
@@ -18,6 +19,7 @@ const routes: Routes = [];
     { path: 'Usuarios', data: { breadcrumb: 'Button' }, component: UsuariosComponent },
     { path: 'GestionALectivos', data: { breadcrumb: 'Button' }, component: GestionAlectivosComponent },
     { path: 'GestionNotas', data: { breadcrumb: 'Button' }, loadChildren: () => import('./notas/notas.module').then(m => m.NotasModule) },
+    { path: 'Reportes', data: { breadcrumb: 'Button' }, component: ReportesComponent },
   ])],
   exports: [RouterModule]
 })

@@ -36,9 +36,12 @@ import { MateriasComponent } from './materias/materias.component';
 import { GestionAlectivosComponent } from './gestion-alectivos/gestion-alectivos.component';
 import { TabViewModule } from 'primeng/tabview';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { SharedPipesModule } from '../pipes/shared-pipes.module';
+import { TagModule } from 'primeng/tag';
+import { ReportesComponent } from './reportes/reportes.component';
 
 @NgModule({
-  declarations: [UsuariosComponent, CursosComponent,ALectivoComponent, MateriasComponent, GestionAlectivosComponent],
+  declarations: [UsuariosComponent, CursosComponent,ALectivoComponent, MateriasComponent, GestionAlectivosComponent, ReportesComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -72,7 +75,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     RadioButtonModule,
     FormsModule,
     TabViewModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    SharedPipesModule,
+    TagModule
   ]
 })
 export class AdminModule { }
