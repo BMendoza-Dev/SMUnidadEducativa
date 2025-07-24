@@ -9,7 +9,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-topbar',
   templateUrl: './app.topbar.component.html',
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class AppTopBarComponent implements AfterViewInit, OnInit {
 
@@ -25,6 +25,7 @@ export class AppTopBarComponent implements AfterViewInit, OnInit {
   rowsPerPageOptions = appConfig.rowsPerPageOptions;
   consultarUsuariosDB = false;
   nombre = '';
+  cedula = '';
   usuarios: any[] = [];
 
   constructor(public layoutService: LayoutService, private adminService: AdminService, private messageService: MessageService,
@@ -41,6 +42,7 @@ export class AppTopBarComponent implements AfterViewInit, OnInit {
 
     this.globalFilterFields = this.generateGlobalFilterFields();
   }
+
 
   onGlobalFilter(table: Table, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
@@ -86,13 +88,30 @@ export class AppTopBarComponent implements AfterViewInit, OnInit {
     }
   }
 
-  consultarUsuario() {
-    if (this.nombre != '') {
-      this.adminService.getSRI(this.nombre.toLocaleUpperCase()).subscribe({
+  consultarUsuarioCedula() {
+    if (this.cedula != '') {
+      this.spinner.show();
+      this.adminService.consultarPorCedula({value: this.cedula}).subscribe({
         next: rest => {
-          rest.forEach(usuario => {
-            this.usuarios.push(usuario);
-          });
+          debugger
+          this.usuarios = [rest.data];
+          this.spinner.hide();
+        }, error: e => {
+          this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'No existen registro con esos datos', life: 2000 });
+        }
+      })
+    } else {
+      this.messageService.add({ key: 'tst', severity: 'warn', summary: 'Alerta!', detail: 'Existe campos vacios', life: 2000 });
+    }
+  }
+
+  consultarUsuarioNombres() {
+    if (this.nombre != '') {
+      this.spinner.show();
+      this.adminService.consultarPorNombres({value:this.nombre.toLocaleUpperCase()}).subscribe({
+        next: rest => {
+          this.usuarios = rest.data;
+          this.spinner.hide();
         }, error: e => {
           this.messageService.add({ key: 'tst', severity: 'error', summary: 'Error!', detail: 'No existen registro con esos datos', life: 2000 });
         }

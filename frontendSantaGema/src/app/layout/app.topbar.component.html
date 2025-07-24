@@ -27,30 +27,52 @@
             <i class="pi pi-users"></i> <!-- Icono de usuarios -->
             <span>Usuarios</span>
         </button>
-
     </div>
-
 </div>
 
-<p-dialog [(visible)]="consultarUsuarios" [style]="{width: '450px'}" header="Consultar Persona" [modal]="true"
+<p-toast key="tst"></p-toast>
+
+<p-dialog [(visible)]="consultarUsuarios" [style]="{width: '750px'}" header="Consultar Persona" [modal]="true"
     class="p-fluid">
     <ng-template pTemplate="content">
-        <div class="field">
-            <label for="nombre">Nombre</label>
-            <input placeholder="Ingrese Apellidos y Nombres" type="text" pInputText id="nombre" [(ngModel)]="nombre"
-                required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !curso.nombre}" />
-            <small class="ng-dirty ng-invalid" *ngIf="submitted && !curso.nombre">Nombre es requerido.</small>
-        </div>
+        <p-tabView styleClass="tabview-custom">
+            <p-tabPanel>
+                <ng-template pTemplate="header">
+                    <span>Cédula</span>
+                </ng-template>
+                <div class="field">
+                    <label for="nombre">Cédula:</label>
+                    <input placeholder="Ingrese una cédula" type="text" pInputText id="cedula" [(ngModel)]="cedula"
+                        required autofocus />
+                </div>
+                <div class="field">
+                    <button pButton pRipple label="Consultar" class="p-button-text"
+                        (click)="consultarUsuarioCedula()"></button>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Header II">
+                <ng-template pTemplate="header">
+                    <span>Nombres</span>
+                </ng-template>
+                <div class="field">
+                    <label for="nombre">Nombres:</label>
+                    <input placeholder="Ingrese Apellidos y Nombres" type="text" pInputText id="nombres" [(ngModel)]="nombre"
+                        required autofocus />
+                </div>
+                <div class="field">
+                    <button pButton pRipple label="Consultar" class="p-button-text"
+                        (click)="consultarUsuarioNombres()"></button>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
         <!-- Boton para consultar-->
-        <div class="field">
-            <button pButton pRipple label="Consultar" class="p-button-text" (click)="consultarUsuario()"></button>
-        </div>
+
 
         <div class="field">
-            <div *ngIf="usuarios.length > 0; else noData">
+            <div *ngIf="usuarios && usuarios.length > 0; else noData">
                 <ul>
                     <li *ngFor="let usuario of usuarios">
-                        {{ usuario.identificacion}} - {{usuario.nombreComercial}}
+                        {{ usuario?.cedula}} - {{usuario?.nombre}} - {{usuario?.fecha_nacimiento}}
                     </li>
                 </ul>
             </div>
@@ -71,7 +93,7 @@
     </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="consultarUsuariosDB" [style]="{width: '750px'}" header="Consultar Persona" [modal]="true"
+<p-dialog [(visible)]="consultarUsuariosDB" [style]="{width: '750px'}" header="Historial de usuarios" [modal]="true"
     class="p-fluid">
     <ng-template pTemplate="content">
         <p-table #dt [value]="usuariosDB" [columns]="cols" responsiveLayout="scroll" [rows]="rowsInit"

@@ -13,6 +13,8 @@ export interface Curso {
 export interface Materia {
     id?:number;
     nombre?: string;
+    tipo_nota?: string;
+    incluye_promedio?: boolean;
 }
 export interface Usuarios{
     id?:number;

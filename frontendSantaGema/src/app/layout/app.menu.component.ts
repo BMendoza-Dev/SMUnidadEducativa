@@ -53,7 +53,8 @@ export class AppMenuComponent implements OnInit {
                                 label: 'Registro de notas', icon: 'pi pi-fw pi-check', routerLink: ['/admin/GestionNotas/registrar-notas'],
                             }
                         ]
-                    }
+                    },
+                    { label: 'Reportes', icon: 'pi pi-fw pi-file', routerLink: ['/admin/Reportes'] },
                 ],
             }
         ];

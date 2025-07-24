@@ -178,6 +178,14 @@ export class AdminService {
     return this.http.get(apiUrl);
   }
 
+  consultarPorCedula(dato: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}consultarPorCedula`, dato);
+  }
+
+  consultarPorNombres(dato: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}consultarPorNombres`, dato);
+  }
+
   getListMateria(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}getListMateria`);
   }
@@ -185,13 +193,17 @@ export class AdminService {
   registerMateria(datos: any): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('nombre', datos.nombre);
-
+    formData.append('tipo_nota', datos.tipo_nota);
+    formData.append('incluye_promedio', datos.incluye_promedio);
     return this.http.post<any>(`${this.apiUrl}registerMateria`, formData);
   }
 
   updateMateria(datos: any): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('nombre', datos.nombre);
+    formData.append('id', datos.id);
+    formData.append('tipo_nota', datos.tipo_nota);
+    formData.append('incluye_promedio', datos.incluye_promedio);
 
     return this.http.post<any>(`${this.apiUrl}updateMateria/${datos.id}`, formData);
   }
@@ -248,9 +260,22 @@ export class AdminService {
     return this.http.get<any[]>(`${this.apiUrl}obtenerNotas/${matriculaId}`);
   }
 
-  generarDNI():Observable<any> {
+  generarDNI(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}generarDNI`);
 
   }
+
+  // Reportes
+  getEstudiantesPorAnioYCurso(payload: { anio_lectivo_id: number, curso_id: number }): Observable<any> {
+    return this.http.post(`${this.apiUrl}getListStudentsByALectivo`, payload);
+  }
+
+  getCertificadoPdf(matriculaId: number): Observable<Blob> {
+  return this.http.get(`${this.apiUrl}certificados/notas-pdf/${matriculaId}`, {
+    responseType: 'blob' // importante
+  });
+}
+
+
 
 }

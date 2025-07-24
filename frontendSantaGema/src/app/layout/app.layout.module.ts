@@ -23,6 +23,7 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { SharedPipesModule } from '../SantaGema/pipes/shared-pipes.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
     declarations: [
@@ -51,7 +52,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
         ToastModule,
         TableModule,
         SharedPipesModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        TabViewModule,
     ],
     exports: [AppLayoutComponent]
 })
